@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { analyzeSet, generateSets, setDuration } from '../../src/engine/generate'
 import type { EngineTrack } from '../../src/engine/types'
-import { benchLibrary, CTX, demoEngine } from './helpers'
+import { CTX, demoEngine } from './helpers'
 
 const lib = demoEngine()
 const club = lib.filter((t) => t.bpm! >= 115 && t.bpm! <= 132)
@@ -111,24 +111,6 @@ describe('generateSets', () => {
     const smooth = analyzeSet([t('a', '8A', 120), t('b', '8A', 122), t('c', '8A', 124), t('d', '8A', 121)], { mode: 'smooth', arc: 'gentle', overlapSec: 60, ctx: CTX })
     expect(smooth.transitions[1]!.reasons).toContain('BPM drift ✓')
     expect(smooth.transitions[2]!.reasons).toContain('BPM backtrack −3')
-  })
-
-  it('PERF: 40-track organizer < 300 ms', () => {
-    const pool = benchLibrary(40)
-    const t0 = performance.now()
-    const res = generateSets(pool, { arc: 'full', targetSec: null, overlapSec: 60, picked: pool.map((x) => x.id), poolMode: 'picked', ctx: CTX })
-    const ms = performance.now() - t0
-    expect(res[0]!.tracks).toHaveLength(40)
-    expect(ms).toBeLessThan(300 * 3) // 3 versions; each mode within the 300 ms budget
-  })
-
-  it('PERF: 2,000-track library fill < 1.5 s', () => {
-    const big = benchLibrary(2000)
-    const t0 = performance.now()
-    const res = generateSets(big, { arc: 'full', targetSec: 3600, overlapSec: 60, poolMode: 'fill', ctx: CTX })
-    const ms = performance.now() - t0
-    expect(ms).toBeLessThan(1500)
-    for (const r of res) expect(Math.abs(r.durationSec - 3600) / 3600).toBeLessThanOrEqual(0.05)
   })
 
   it('max artist repeats and allowed filter are respected', () => {

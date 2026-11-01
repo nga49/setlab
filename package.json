@@ -10,9 +10,10 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage",
+    "coverage": "vitest run --coverage --exclude 'tests/perf/**'",
     "e2e": "playwright test",
-    "icons": "node scripts/make-icons.mjs"
+    "icons": "node scripts/make-icons.mjs",
+    "test:perf": "vitest run tests/perf"
   },
   "dependencies": {
     "@fontsource/bungee": "^5.3.0",

@@ -3,7 +3,7 @@ import { EDGE_MIN, LibraryGraph } from '../../src/engine/graph'
 import { mulberry32 } from '../../src/engine/random'
 import { ALL_KEYS } from '../../src/engine/camelot'
 import type { EngineTrack } from '../../src/engine/types'
-import { benchLibrary, CTX, demoEngine, track } from './helpers'
+import { CTX, demoEngine, track } from './helpers'
 
 describe('LibraryGraph on a small hand-built graph', () => {
   // A chain of +1 moves: 8A → 9A → 10A → 11A → 12A → 1A, same BPM and genre.
@@ -115,14 +115,4 @@ describe('next / before / after / bridges / fit', () => {
     expect(g.fitScore(track('odd', null, 60, 1, 'Gqom'))).toBe(0)
   })
 
-  it('PERF: next tracks and path on 5,000 tracks stay fast', () => {
-    const big = new LibraryGraph(benchLibrary(5000), CTX)
-    const t0 = performance.now()
-    big.nextTracks('bench:1')
-    const t1 = performance.now()
-    big.path('bench:1', 'bench:4000')
-    const t2 = performance.now()
-    expect(t1 - t0).toBeLessThan(100)
-    expect(t2 - t1).toBeLessThan(1500)
-  })
 })

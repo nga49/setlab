@@ -32,6 +32,9 @@ jobs:
       - name: Unit tests (with engine coverage)
         run: npm run coverage
 
+      - name: Engine performance budgets
+        run: npm run test:perf
+
       - name: Build
         run: npm run build
 
