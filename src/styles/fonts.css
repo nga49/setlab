@@ -1,0 +1,15 @@
+/*
+ * Title font: one file, one variable.
+ * To use your own font, replace public/fonts/title.woff2 (see README "Change title font or app name").
+ * If that file is missing, the browser falls back to the bundled Bungee placeholder.
+ */
+@font-face {
+  font-family: 'SetlabTitle';
+  src: url('/fonts/title.woff2') format('woff2'),
+       url('@fontsource/bungee/files/bungee-latin-400-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+:root {
+  --font-title: 'SetlabTitle', 'Space Grotesk', system-ui, sans-serif;
+}

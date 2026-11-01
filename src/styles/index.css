@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+@import '@fontsource/permanent-marker/400.css';
+@import './fonts.css';
+
+@theme {
+  --color-walnut: #2B1D14;
+  --color-walnut-2: #3A281C;
+  --color-walnut-3: #4A3527;
+  --color-walnut-deep: #1E140E;
+  --color-aluminium: #C9C2B4;
+  --color-aluminium-light: #E6E0D3;
+  --color-aluminium-dark: #8A8274;
+  --color-paper: #F2E3C6;
+  --color-paper-dim: #CDBB9C;
+  --color-ink: #2B1D14;
+  --color-ink-soft: #5E4C3A;
+  --color-mustard: #E8A33D;
+  --color-rust: #B5462A;
+  --color-rust-dark: #7A2C19;
+  --color-teal: #1E3D3A;
+  --color-teal-light: #8FC1B5;
+  --color-olive: #5E8C61;
+  --color-good: #5E8C61;
+  --color-ok: #E8A33D;
+  --color-bad: #B5462A;
+  --color-gig-text: #CFCFCF;
+
+  --font-title: 'SetlabTitle', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+  --font-marker: 'Permanent Marker', 'Space Grotesk', cursive;
+
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-press: cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* z-index scale: tabbar 20 · fab 30 · sheet 40 · wheel 50 · toast 60 · grain 70 */
+
+html, body, #root { height: 100%; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-walnut);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--color-mustard); outline-offset: 2px; border-radius: 6px; }
+
+/* Wood grain: fixed, non-interactive layer (never on scroll containers). */
+.wood-grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    repeating-linear-gradient(92deg, rgb(0 0 0 / 0.07) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(88deg, rgb(255 255 255 / 0.02) 0 1px, transparent 1px 11px);
+}
+.gig .wood-grain::after, .gig.wood-grain::after { display: none; }
+
+/* Brushed aluminium faceplate */
+.brushed {
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 1px, rgb(0 0 0 / 0.03) 1px 3px),
+    linear-gradient(180deg, #DCD6C9 0%, #C9C2B4 55%, #B9B2A3 100%);
+  color: var(--color-ink);
+}
+/* Paper card (tape J-card) */
+.paper {
+  background:
+    radial-gradient(circle at 20% 10%, rgb(255 255 255 / 0.25), transparent 40%),
+    var(--color-paper);
+  color: var(--color-ink);
+}
+.dashed-rows > * + * { border-top: 1px dashed rgb(94 76 58 / 0.45); }
+.dashed-rows-dark > * + * { border-top: 1px dashed rgb(205 187 156 / 0.22); }
+
+/* Piano key press: instant on pointer-down */
+.piano-key { transition: transform 90ms var(--ease-press), box-shadow 90ms var(--ease-press); }
+.piano-key:active { transform: translateY(2px); }
+
+.safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+@keyframes reel-spin { to { transform: rotate(360deg); } }
+.reel-spin { animation: reel-spin var(--reel-period, 2s) linear infinite; }
+
+@keyframes sheet-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes toast-in { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-spin { animation: none !important; }
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }

@@ -3,13 +3,13 @@
 Work top to bottom. After each phase: `npm test` + `npm run build` green, update `DECISIONS.md`, commit, push. Tick the boxes in this file as you go.
 
 ## Phase 0 · Foundation
-- [ ] Vite + React + TS + Tailwind + Dexie + PWA + Vitest + Playwright set up
-- [ ] `src/config.ts` with `APP_NAME = "SETLAB"`
-- [ ] Tab shell (Sets, Live, Library, Practice) + Settings sheet + floating wheel button placeholder
-- [ ] Design tokens and fonts per `DESIGN.md`
-- [ ] GitHub Actions: test, build, deploy to GitHub Pages (correct `base` path for a project page)
-- [ ] Em dash guard test
-- [ ] Demo library loaded
+- [x] Vite + React + TS + Tailwind + Dexie + PWA + Vitest + Playwright set up
+- [x] `src/config.ts` with `APP_NAME = "SETLAB"`
+- [x] Tab shell (Sets, Live, Library, Practice) + Settings sheet + floating wheel button placeholder
+- [x] Design tokens and fonts per `DESIGN.md`
+- [x] GitHub Actions: test, build, deploy to GitHub Pages (correct `base` path for a project page)
+- [x] Em dash guard test
+- [x] Demo library loaded
 - **Accept**: site deploys, installable, offline shell loads, Lighthouse PWA checks pass.
 
 ## Phase 1 · Engine
