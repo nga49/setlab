@@ -288,3 +288,23 @@ def test_setup_401_explains_the_paste(tmp_path, monkeypatch):
     with pytest.raises(s.GitHubError, match="press Enter"):
         s.setup(tmp_path / "config.json")
     assert not (tmp_path / "config.json").exists()
+
+
+def test_task_names_are_valid_windows_names():
+    # schtasks answers "The parameter is incorrect" for names with these characters.
+    for name in s.TASK_NAMES:
+        assert not set(name) & set('\\/:*?"<>|'), name
+    bat = (Path(__file__).parent.parent / "uninstall.bat").read_text(encoding="utf-8")
+    for name in s.TASK_NAMES:
+        assert f'"{name}"' in bat
+
+
+def test_setup_keeps_saved_token(tmp_path, monkeypatch, capsys):
+    cfg_path = tmp_path / "config.json"
+    s.Config(repo="me/setlab-data", token=FAKE_TOKEN).save(cfg_path)
+    monkeypatch.setattr(s, "read_token", lambda: "")
+    monkeypatch.setattr("builtins.input", lambda _p="": "me/setlab-data")
+    monkeypatch.setattr(s.GitHub, "check", lambda self: None)
+    assert s.setup(cfg_path).token == FAKE_TOKEN
+    out = capsys.readouterr().out
+    assert "keeping the one already saved" in out and FAKE_TOKEN not in out

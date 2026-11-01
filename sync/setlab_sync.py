@@ -45,7 +45,8 @@ APP_DIR_NAME = "setlab-sync"
 TRACKS_PATH = "tracks.json"
 API = "https://api.github.com"
 API_VERSION = "2022-11-28"
-TASK_NAMES = ("SETLAB sync (every 2 hours)", "SETLAB sync (23:00)")
+# Task names become file names under C:\Windows\System32\Tasks: no \\ / : * ? " < > |
+TASK_NAMES = ("SETLAB sync (every 2 hours)", "SETLAB sync (daily 23h)")
 STARTUP_LINK = "SETLAB sync.lnk"
 
 log = logging.getLogger("setlab_sync")
@@ -663,6 +664,8 @@ def setup(cfg_path: Path) -> Config:
     token = read_token()
     if token:
         cfg.token = token
+    elif cfg.token:
+        print("No new token: keeping the one already saved on this laptop.")
     if not cfg.token:
         raise RuntimeError("No token received. Copy token A from GitHub, then run install.bat again.")
     name = input("Data repo name [setlab-data]: ").strip() or "setlab-data"

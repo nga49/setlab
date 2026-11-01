@@ -88,3 +88,4 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | Deployment needs the build branch merged into `main` and Pages set to GitHub Actions; the live URL will be https://nga49.github.io/setlab/ | The session may not push to `main`; Pages settings are Nico's |
 | 2026-11-01 | Token prompt confirms "Token received (N characters)" and falls back to the clipboard (PowerShell `Get-Clipboard`) when the paste does not arrive; the token is never printed | Nico could not tell the hidden paste had worked |
 | 2026-11-01 | Docs: Smart App Control blocks downloaded .bat files; fix is `Unblock-File` on the unzipped folder (scheduled runs use pythonw.exe, not the .bat) | Seen on Nico's Windows 11 laptop |
+| 2026-11-01 | Daily task renamed `SETLAB sync (daily 23h)`: a colon in a schtasks name fails with "The parameter is incorrect" (names are file names) | Seen on Nico's laptop at install step 4 |
