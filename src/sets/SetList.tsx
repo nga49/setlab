@@ -3,6 +3,7 @@ import { ArrowsLeftRightIcon, LinkSimpleIcon, LockSimpleIcon } from '@phosphor-i
 import type { EngineTrack, TransitionResult } from '../engine/types'
 import { displayTitle } from '../data/effective'
 import { cx, formatBpm, KeyChip, TransitionDot } from '../ui/kit'
+import { TipButton } from '../ai/TipButton'
 
 /**
  * Track list on a tape J-card: numbered rows "01 · Track" with a coloured dot per
@@ -56,7 +57,10 @@ export function SetList({
                   </span>
                 </button>
                 {open === i ? (
-                  <p className={cx('mb-1 ml-8 rounded-lg px-2 py-1 font-mono text-[12px]', paper ? 'bg-ink/8' : 'bg-walnut-3/60', ink)}>{tr.reasons.join(' · ')}</p>
+                  <div className="mb-1 ml-8 flex flex-col gap-1">
+                    <p className={cx('rounded-lg px-2 py-1 font-mono text-[12px]', paper ? 'bg-ink/8' : 'bg-walnut-3/60', ink)}>{tr.reasons.join(' · ')}</p>
+                    <TipButton a={tracks[i - 1]!} b={t} reasons={tr.reasons} paper={paper} />
+                  </div>
                 ) : null}
                 {tr.color === 'bad' && (onSwap || onBridge) ? (
                   <div className="mb-1 ml-8 flex gap-2">

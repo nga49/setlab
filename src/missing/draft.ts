@@ -16,6 +16,7 @@ export interface MissingDraft {
   eraTo: number
   genreText: string
   party: PartyId
+  crowdAge: number
   trendGenre: string
   trendBpm: [number, number]
   vibe: string
@@ -29,6 +30,7 @@ export const missingDraft = createStore<MissingDraft>({
   eraTo: 2009,
   genreText: 'party anthems',
   party: 'wedding',
+  crowdAge: 35,
   trendGenre: 'Afro House',
   trendBpm: [120, 126],
   vibe: '',

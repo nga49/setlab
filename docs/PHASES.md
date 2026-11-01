@@ -48,12 +48,12 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: loading a 5,000-track fixture stays smooth (no frame > 50 ms while scrolling in a perf test), merge tests pass, `pytest` passes.
 
 ## Phase 6 · AI features
-- [ ] Settings: key, models, budget, cost meter
-- [ ] Client with zod schemas, cache, usage tracking, error handling
-- [ ] Estimate track (single + batch) and wiring into quick-add, pasted lists, request handler
-- [ ] Missing tracks finder: all modes, status flow, Copy (Full / Short), Got it, shopping list
-- [ ] Party gap suggestions, explain transition
-- [ ] Spotify: research, implement if usable, otherwise hide and document
+- [x] Settings: key, models, budget, cost meter
+- [x] Client with zod schemas, cache, usage tracking, error handling
+- [x] Estimate track (single + batch) and wiring into quick-add, pasted lists, request handler
+- [x] Missing tracks finder: all modes, status flow, Copy (Full / Short), Got it, shopping list
+- [x] Party gap suggestions, explain transition
+- [x] Spotify: research, implement if usable, otherwise hide and document (hidden: see DECISIONS)
 - **Accept**: all AI calls mocked in tests; app fully usable with no key; one manual-style test with a recorded fixture response for each schema.
 
 ## Phase 7 · Practice

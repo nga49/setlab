@@ -1,0 +1,10 @@
+{
+  "model": "claude-opus-5-5",
+  "stop_reason": "end_turn",
+  "content": [
+    { "type": "server_tool_use", "id": "srvtoolu_02", "name": "web_search", "input": { "query": "beatport afro house top 100" } },
+    { "type": "web_search_tool_result", "tool_use_id": "srvtoolu_02", "content": [] },
+    { "type": "text", "text": "{\"tracks\":[{\"artist\":\"Demo Artist 01\",\"title\":\"Demo Track A\",\"remix\":null,\"year\":2024,\"genre\":\"Tech House\",\"estBpm\":126,\"estCamelot\":\"12B\",\"energy\":7,\"why\":\"Peak-time builder.\",\"confidence\":\"high\"},{\"artist\":\"Demo Artist 50\",\"title\":\"Demo Track New\",\"remix\":\"Demo Remix Z\",\"year\":2026,\"genre\":\"afro house\",\"estBpm\":123,\"estCamelot\":\"Am\",\"energy\":12,\"why\":\"Sunset groove.\",\"confidence\":\"medium\"}],\"chart\":\"hype\",\"trendNote\":\"Percussive vocals are moving.\"}" }
+  ],
+  "usage": { "input_tokens": 12000, "output_tokens": 800, "cache_read_input_tokens": 2000, "server_tool_use": { "web_search_requests": 3 } }
+}

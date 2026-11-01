@@ -1,0 +1,10 @@
+{
+  "model": "claude-opus-5-5",
+  "stop_reason": "end_turn",
+  "content": [
+    { "type": "server_tool_use", "id": "srvtoolu_01", "name": "web_search", "input": { "query": "Demo Artist 07 Demo Track K BPM key" } },
+    { "type": "web_search_tool_result", "tool_use_id": "srvtoolu_01", "content": [{ "type": "web_search_result", "title": "Demo Track K", "url": "https://example.invalid/demo-track-k", "encrypted_content": "x" }] },
+    { "type": "text", "text": "Here is what I found:\n```json\n{\"bpm\":122,\"camelot\":\"Fm\",\"keyName\":\"F minor\",\"genre\":\"Melodic House & Techno\",\"energy\":6,\"year\":2025,\"confidence\":\"medium\",\"note\":\"Found on a store page.\"}\n```" }
+  ],
+  "usage": { "input_tokens": 4200, "output_tokens": 300, "server_tool_use": { "web_search_requests": 1 } }
+}
