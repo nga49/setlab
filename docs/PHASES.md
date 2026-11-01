@@ -57,9 +57,9 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: all AI calls mocked in tests; app fully usable with no key; one manual-style test with a recorded fixture response for each schema.
 
 ## Phase 7 · Practice
-- [ ] Session history, manual practice log
-- [ ] Rate transitions, ratings feed the engine (tests)
-- [ ] Export: rekordbox playlist XML (verified format), text, M3U, share sheet
+- [x] Session history, manual practice log
+- [x] Rate transitions, ratings feed the engine (tests)
+- [x] Export: rekordbox playlist XML (verified format), text, M3U, share sheet
 - **Accept**: exported XML validates against the documented structure; rating 🔥 a pair raises it in Next track results (test).
 
 ## Phase 8 · Polish and handover

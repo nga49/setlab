@@ -217,3 +217,18 @@ def test_main_dry_run_cli(monkeypatch):
     monkeypatch.setattr(s, "read_from_db", lambda db=None: (_ for _ in ()).throw(RuntimeError("no db")))
     assert s.main(["--dry-run", "--xml", str(FIX / "rekordbox.xml")]) == 0
     assert s.main(["--playlists", str(FIX / "missing.xml")]) == 1
+
+
+def test_resolves_the_xml_the_app_exports(tmp_appdata):
+    """Cross-language contract: tests/practice.test.ts checks the app writes exactly this file."""
+    locs = s._xml_locations(FIX / "rekordbox.xml")
+    out = tmp_appdata / "playlists.xml"
+    n, missing = s.resolve_playlists([FIX / "app-export.xml"], locs, out)
+    assert (n, missing) == (1, 0)
+    import xml.etree.ElementTree as ET
+
+    root = ET.parse(out).getroot()
+    locations = [t.get("Location") for t in root.find("COLLECTION").findall("TRACK")]
+    assert locations == ["file://localhost/C:/Music/demo%20a.mp3", "file://localhost/C:/Music/demo%20b.mp3"]
+    pl = [n for n in root.iter("NODE") if n.get("Type") == "1"][0]
+    assert pl.get("Name") == "Saturday warm-up" and [t.get("Key") for t in pl.findall("TRACK")] == ["101", "102"]

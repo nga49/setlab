@@ -75,3 +75,8 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | AI cache keyed by SHA-256 of (feature, model, prompt) with the TTLs of AI.md §2 | Cache first, never loop without user action |
 | 2026-11-01 | Spotify skipped and its chip hidden: since Feb 2026 Development Mode needs the app owner on Premium, caps users at 5 and reshaped the library/playlist endpoints; Spotify's docs host is not reachable from the build session, so the endpoints could not be verified | AI.md: "if not usable or too restrictive: skip it entirely, hide the chip" |
 | 2026-11-01 | Beatport search URL `https://www.beatport.com/search?q=<encoded>` (main artist + title); confirmed only by third-party sources | Secondary "Open Beatport" link; primary action stays Copy |
+| 2026-11-01 | Practice log from a saved set: plays stamped in set order, spaced by track length minus overlap | Gives a session to rate even without a live gig |
+| 2026-11-01 | Ratings store the key move and BPM bucket at rating time; 🔥 +8 / 👌 +2 / 👎 −15 per pair plus the capped pattern bonus | ENGINE.md §5; tested: 🔥 moves a pair up in Next |
+| 2026-11-01 | rekordbox export: KeyType 0 (TrackID) playlist, tracks referenced by rekordbox content id, no Location; non-rekordbox tracks (demo, wishlist) are skipped and counted; a shared fixture is checked from TypeScript (exact output) and Python (laptop resolver) | Phone has no file paths; laptop tool fills them in |
+| 2026-11-01 | M3U export carries names and `#SETLAB-ID` comments, no file paths | The phone never has file paths (DATA.md); M3U stays a portable fallback |
+| 2026-11-01 | Share sheet via Web Share API with files when supported, else a normal download | Works on iOS, Android and desktop browsers |
