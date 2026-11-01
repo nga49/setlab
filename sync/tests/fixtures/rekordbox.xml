@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DJ_PLAYLISTS Version="1.0.0">
+  <PRODUCT Name="rekordbox" Version="7.0.0" Company="AlphaTheta"/>
+  <COLLECTION Entries="4">
+    <TRACK TrackID="101" Name="Demo Track A (Demo Remix X)" Artist="Demo Artist 01" Album="Demo Album" Genre="Tech House" Kind="MP3 File" TotalTime="372" Year="2021" AverageBpm="124.00" DateAdded="2026-10-20" Rating="204" Location="file://localhost/C:/Music/demo%20a.mp3" Tonality="Am" Label="Demo Label" Comments="demo comment"/>
+    <TRACK TrackID="102" Name="Demo Track B (Original Mix)" Artist="Demo Artist 02 feat. Demo Singer" Genre="deep house" TotalTime="401" Year="2019" AverageBpm="121.50" DateAdded="2026-09-01" Rating="0" Location="file://localhost/C:/Music/demo%20b.mp3" Tonality="8A"/>
+    <TRACK TrackID="103" Name="Demo Track C" Artist="Demo Artist 03" Genre="Afro House" TotalTime="355" Year="0" AverageBpm="0.00" DateAdded="2026/08/15" Rating="51" Location="file://localhost/C:/Music/demo%20c.mp3" Tonality="" Remixer="Demo Remixer"/>
+    <TRACK TrackID="104" Name="" Artist="No Title" TotalTime="200" AverageBpm="120" Location="file://localhost/C:/Music/notitle.mp3"/>
+  </COLLECTION>
+  <PLAYLISTS>
+    <NODE Type="0" Name="ROOT" Count="2">
+      <NODE Type="1" Name="Warm-up" KeyType="0" Entries="2">
+        <TRACK Key="101"/>
+        <TRACK Key="103"/>
+      </NODE>
+      <NODE Type="0" Name="Folder" Count="1">
+        <NODE Type="1" Name="Party 2000s" KeyType="1" Entries="1">
+          <TRACK Key="file://localhost/C:/Music/demo%20b.mp3"/>
+        </NODE>
+      </NODE>
+    </NODE>
+  </PLAYLISTS>
+</DJ_PLAYLISTS>

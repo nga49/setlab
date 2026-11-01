@@ -1,0 +1,6 @@
+{
+  "model": "claude-haiku-5-5",
+  "stop_reason": "end_turn",
+  "content": [{ "type": "text", "text": "{\"items\":[{\"index\":0,\"bpm\":120,\"camelot\":\"9A\",\"keyName\":\"Em\",\"genre\":\"Deep House\",\"energy\":4,\"year\":2019,\"confidence\":\"medium\",\"note\":\"\"},{\"index\":2,\"bpm\":128,\"camelot\":\"10B\",\"keyName\":\"D\",\"genre\":\"Tech House\",\"energy\":15,\"year\":2024,\"confidence\":\"high\",\"note\":\"\"}]}" }],
+  "usage": { "input_tokens": 900, "output_tokens": 220 }
+}

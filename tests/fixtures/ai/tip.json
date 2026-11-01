@@ -1,0 +1,6 @@
+{
+  "model": "claude-haiku-5-5",
+  "stop_reason": "end_turn",
+  "content": [{ "type": "text", "text": "{\"tip\":\"Swap the bass on the downbeat of a 16-bar phrase and loop the outro.\"}" }],
+  "usage": { "input_tokens": 300, "output_tokens": 40 }
+}

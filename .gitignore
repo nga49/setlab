@@ -1,0 +1,18 @@
+node_modules
+dist
+dev-dist
+coverage
+test-results
+playwright-report
+*.log
+.DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# Never commit personal data
+tracks.json
+!sync/tests/fixtures/*.json
+*.local
+.env*

@@ -1,0 +1,6 @@
+{
+  "model": "claude-haiku-5-5",
+  "stop_reason": "end_turn",
+  "content": [{ "type": "text", "text": "{\"bpm\":null,\"camelot\":null,\"keyName\":null,\"genre\":null,\"energy\":null,\"year\":null,\"confidence\":\"low\",\"note\":\"I do not know this release.\"}" }],
+  "usage": { "input_tokens": 500, "output_tokens": 60 }
+}
