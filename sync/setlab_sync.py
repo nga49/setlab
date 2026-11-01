@@ -45,7 +45,8 @@ APP_DIR_NAME = "setlab-sync"
 TRACKS_PATH = "tracks.json"
 API = "https://api.github.com"
 API_VERSION = "2022-11-28"
-TASK_NAMES = ("SETLAB sync (every 2 hours)", "SETLAB sync (23:00)")
+# Task names become file names under C:\Windows\System32\Tasks: no \\ / : * ? " < > |
+TASK_NAMES = ("SETLAB sync (every 2 hours)", "SETLAB sync (daily 23h)")
 STARTUP_LINK = "SETLAB sync.lnk"
 
 log = logging.getLogger("setlab_sync")
@@ -82,7 +83,7 @@ class Config:
     def load(cls, path: Path) -> "Config":
         if not path.exists():
             return cls()
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
     def save(self, path: Path) -> None:
@@ -609,12 +610,64 @@ def playlists_output() -> Path:
 # Setup and scheduling (Windows)
 
 
+_TOKEN_RE = re.compile(r"(?:github_pat_|gh[pousr]_)[A-Za-z0-9_]{20,}")
+
+
+def looks_like_token(s: str) -> bool:
+    return bool(_TOKEN_RE.fullmatch(s or ""))
+
+
+def clipboard_text() -> str:
+    """Clipboard text on Windows via PowerShell (no extra package). Empty when unavailable."""
+    if os.name != "nt":
+        return ""
+    try:
+        r = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", "Get-Clipboard"],
+            capture_output=True, text=True, timeout=20,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return (r.stdout or "").strip()
+
+
+SETUP_401 = (
+    "GitHub refused this token. Usually the paste did not arrive in full. "
+    "Copy token A again on GitHub, run install.bat again, and at the Token A prompt "
+    "just press Enter: the token is then read from the clipboard."
+)
+
+
+def read_token(ask=getpass.getpass, clipboard=clipboard_text) -> str:
+    """Hidden prompt for token A. Pasting shows nothing (by design), so confirm what was
+    received, and fall back to the clipboard when the console did not take the paste.
+    The token itself is never printed."""
+    print("Copy token A, then paste it here (right-click or Ctrl+V) and press Enter.")
+    print("Nothing appears while you paste: that is normal, the token stays hidden.")
+    print("If pasting does not work, just press Enter: the token is then read from the clipboard.")
+    typed = "".join(ch for ch in ask("Token A: ") if ch.isprintable()).strip()
+    if looks_like_token(typed):
+        print(f"Token received ({len(typed)} characters).")
+        return typed
+    clip = clipboard()
+    if looks_like_token(clip):
+        print(f"Token read from the clipboard ({len(clip)} characters).")
+        return clip
+    if typed:
+        print(f"Received {len(typed)} characters, but GitHub tokens start with github_pat_. Checking it anyway.")
+    return typed
+
+
 def setup(cfg_path: Path) -> Config:
     cfg = Config.load(cfg_path)
     print("SETLAB sync setup. Your token is stored only on this laptop and never shown.")
-    token = getpass.getpass("Paste GitHub token A (Contents: Read and write on setlab-data) and press Enter: ").strip()
+    token = read_token()
     if token:
         cfg.token = token
+    elif cfg.token:
+        print("No new token: keeping the one already saved on this laptop.")
+    if not cfg.token:
+        raise RuntimeError("No token received. Copy token A from GitHub, then run install.bat again.")
     name = input("Data repo name [setlab-data]: ").strip() or "setlab-data"
     if "/" in name:
         cfg.repo = name
@@ -622,10 +675,17 @@ def setup(cfg_path: Path) -> Config:
         import requests
 
         r = requests.get(f"{API}/user", headers={"Authorization": f"Bearer {cfg.token}", "X-GitHub-Api-Version": API_VERSION}, timeout=30)
+        if r.status_code == 401:
+            raise GitHubError(401, SETUP_401)
         if r.status_code != 200:
             raise GitHubError(r.status_code, explain(r.status_code))
         cfg.repo = f"{r.json()['login']}/{name}"
-    GitHub(cfg.token, cfg.repo).check()
+    try:
+        GitHub(cfg.token, cfg.repo).check()
+    except GitHubError as e:
+        if e.status == 401:
+            raise GitHubError(401, SETUP_401) from None
+        raise
     cfg.save(cfg_path)
     print(f"Saved. Data repo: {cfg.repo}")
     return cfg

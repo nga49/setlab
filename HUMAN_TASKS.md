@@ -1,15 +1,17 @@
 # 🙋 HUMAN TASKS · only what Claude Code can't do
 
+The app is called **Awesome Mix** (repo and URL keep the name `setlab`).
+
 ## 📍 Status (updated by Claude Code · 2026-11-01)
 
 | | |
 |---|---|
-| 🌐 App URL | **https://nga49.github.io/setlab/** · goes live after steps A and B below |
+| 🌐 App URL | **https://nga49.github.io/setlab/** · live |
 | ✅ Built and tested | Sets (organizer, 3 versions, editor, party sets, tape rack) · Live (now playing, next 5, request, path, bridge, gig mode) · Camelot wheel · Library (5,000-track list, filters, edits, quick-add, insights, gap finder) · Practice (history, ratings, exports) · Settings (sync, AI, backup) · offline PWA |
-| 🔵 Library sync | Ready: laptop tool in `sync/` (rekordbox 6/7 via pyrekordbox 0.5, XML fallback). Needs steps C to F |
+| 🔵 Library sync | Working: laptop syncs rekordbox master.db, phone connected |
 | 🟣 AI | Ready: estimates, missing tracks finder, gap picks, mixing tips. Needs a Claude API key (step H). Without it everything else works |
 | 🎧 Spotify | Not built: Spotify's 2026 Development Mode rules (Premium owner, endpoint changes) could not be verified. Missing tracks use web search instead |
-| ⏭️ Your next step | Step A below |
+| ⏭️ Your next step | Rows 21 and 22 under "Added by Claude Code" (A to G done) |
 
 ### Your steps, in order
 
@@ -20,14 +22,9 @@
 | C | 💻 github.com | New **private** repo **setlab-data** (tick "Add a README") |
 | D | 💻 GitHub → Settings → Developer settings → Fine-grained tokens | **Token A**: only `setlab-data`, Contents **Read and write**, 1 year. **Token B**: only `setlab-data`, Contents **Read-only**, 1 year |
 | E | 💻 Laptop | Install Python 3.11+ (python.org, tick "Add Python to PATH"). Open rekordbox once |
-| F | 💻 Laptop | Download `setlab` as ZIP (after A) → unzip → `sync` → double-click **install.bat** → paste token A → wait for "✅ … tracks synced" |
+| F | 💻 Laptop | Download `setlab` as ZIP → unzip → `sync`. If Windows blocks install.bat: inside `sync`, address bar → `powershell` → `if (Test-Path .\setlab_sync.py) { Get-ChildItem -Recurse \| Unblock-File; 'Done' } else { 'Wrong folder' }`. Double-click **install.bat** → paste token A (it stays invisible, that is normal) → Enter → wait for "✅ … tracks synced" |
 | G | 📱 Phone | Open the app URL → Share → **Add to Home Screen** → ⚙️ → Library sync → `nga49/setlab-data` + token B → **Test connection** |
 | H | 📱 Phone, optional | console.anthropic.com → API key → app ⚙️ → AI (budget €5/month by default) |
-
----|---|
-| 🌐 App URL | _not live yet_ |
-| ✅ Live features | _none yet_ |
-| ⏭️ Your next step | Step 1 below |
 
 ---
 
@@ -62,7 +59,7 @@
 |---|---|
 | 8 | Install **Python 3.11+** from python.org · tick ✅ "Add Python to PATH" |
 | 9 | Download the **setlab** repo as ZIP · unzip · open folder `sync` |
-| 10 | Double-click **install.bat** · paste token **A** when asked · press Enter |
+| 10 | Double-click **install.bat** · paste token **A** when asked (nothing appears, that is normal) · press Enter. Blocked by Smart App Control? See `sync/README.md` step 3 |
 | 11 | Wait for "✅ tracks synced" |
 
 Then it runs by itself: at logon, every 2 h, and at 23:00. 🎧 Add and analyze tracks in rekordbox as usual, nothing else.
@@ -98,6 +95,9 @@ Without step 14: wheel, organizer, live, library all work. Only AI search and es
 | 18 | 💻 github.com | Merge the build branch into `main` (step A) | Deploy runs only from `main` |
 | 19 | 💻 rekordbox, once | Preferences → View → Layout: tick **rekordbox xml**. Preferences → Advanced → Database → rekordbox xml: choose `Music\setlab\setlab-playlists.xml` | Lets rekordbox see the playlists sent from the phone |
 | 20 | 🌐 Claude Code network settings, optional | Allow `pyrekordbox.readthedocs.io`, `docs.github.com` and `developer.spotify.com` for future build sessions | They were blocked during the build; checks were done from package source and the live API instead |
+| 21 | 💻 github.com | Merge the pull request for branch `claude/autonomous-project-build-8wbcju` into `main` | Puts the new name, the Look settings and the bottom gap fix online |
+| 22 | 📱 Phone | Put `Guardians.ttf` in the Files app (AirDrop it, or save the ZIP to iCloud Drive and tap it to unzip). App ⚙️ → **Look** → **Choose font file** → pick it | The font's license is "All Rights Reserved", so it is never put in the public repo or website: it lives only on your phone |
+| 23 | 📱 Phone, optional | To see "Awesome Mix" under the home screen icon: ⚙️ → Backup → tick **Include API key and tokens** → **Export**. Remove the icon, open the URL in Safari, Share → **Add to Home Screen**, then ⚙️ → Backup → **Import** | iOS keeps the name given when the icon was added. Removing the icon can erase the app's data on the phone, hence the backup |
 
 ### 🎚️ rekordbox playlists (Send to rekordbox)
 

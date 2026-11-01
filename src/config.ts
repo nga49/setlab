@@ -2,7 +2,8 @@
  * Single place for the app identity. Rename the app by changing APP_NAME only.
  * Used by: header, PWA manifest, page title, icon text, backup files.
  */
-export const APP_NAME = 'SETLAB'
+export const APP_NAME = 'Awesome Mix'
+/** Internal id: database name, backup files, storage keys. Never change it (data would be lost). */
 export const APP_SLUG = 'setlab'
 export const APP_DESCRIPTION = 'Personal DJ set organizer: harmonic mixing, BPM flow and energy arcs.'
 export const THEME_COLOR = '#2B1D14'

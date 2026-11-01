@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DJ_PLAYLISTS Version="1.0.0">
-  <PRODUCT Name="SETLAB" Version="1" Company=""/>
+  <PRODUCT Name="Awesome Mix" Version="1" Company=""/>
   <COLLECTION Entries="2">
     <TRACK TrackID="101" Name="Demo Track A" Artist="Demo Artist 01" AverageBpm="124.00" Tonality="Am" TotalTime="372"/>
     <TRACK TrackID="102" Name="Demo Track &quot;B&quot; (Demo Remix)" Artist="Demo Artist 02 &amp; Demo Artist 03" AverageBpm="121.50" Tonality="C" TotalTime="401"/>

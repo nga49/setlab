@@ -18,6 +18,7 @@ import { WheelButton } from './wheel/WheelButton'
 import WheelOverlay from './wheel/WheelOverlay'
 import { InstallHint } from './ui/InstallHint'
 import { installClickSounds } from './ui/clickSound'
+import { applyTitleFont } from './ui/titleFont'
 
 const TAB_ICONS: Record<TabId, typeof PlayIcon> = {
   sets: CassetteTapeIcon,
@@ -38,6 +39,17 @@ export default function App() {
 
   useEffect(() => (settings.clickSounds ? installClickSounds() : undefined), [settings.clickSounds])
 
+  // Title font picked on this phone (Settings › Look). Keyed on the data so it loads once.
+  const titleFont = settings.titleFont
+  useEffect(() => {
+    void applyTitleFont(titleFont).catch(() => applyTitleFont(null))
+  }, [titleFont?.data])
+
+  // Paints whatever lies outside the layout (iOS bottom gap) the same color as the tab bar or gig screen.
+  useEffect(() => {
+    document.documentElement.classList.toggle('gig-mode', gig)
+  }, [gig])
+
   // On open: fetch tracks.json when the last fetch is older than 30 min (docs/SYNC.md §4).
   useEffect(() => {
     void syncIfStale(SYNC_STALE_MS)
@@ -47,7 +59,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className={cx('wood-grain flex h-full flex-col', gig && 'gig bg-walnut')}>
+    <div className={cx('wood-grain relative flex h-full flex-col bg-walnut', gig && 'gig')}>
       {!gig ? (
       <header className="safe-top flex shrink-0 items-center justify-between gap-3 px-4 pb-2">
         <div className="flex items-center gap-2">
@@ -92,7 +104,7 @@ export default function App() {
 
       {!gig ? (
       <nav
-        className="safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-walnut-3 bg-walnut-deep/95"
+        className="safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-walnut-3 bg-walnut-deep"
         aria-label="Main"
       >
         <ul className="mx-auto flex max-w-[720px] justify-around">
