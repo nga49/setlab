@@ -232,3 +232,45 @@ def test_resolves_the_xml_the_app_exports(tmp_appdata):
     assert locations == ["file://localhost/C:/Music/demo%20a.mp3", "file://localhost/C:/Music/demo%20b.mp3"]
     pl = [n for n in root.iter("NODE") if n.get("Type") == "1"][0]
     assert pl.get("Name") == "Saturday warm-up" and [t.get("Key") for t in pl.findall("TRACK")] == ["101", "102"]
+
+
+# Token prompt: pasting into a hidden prompt shows nothing, so confirm and fall back to
+# the clipboard. Fake token built at runtime so no token-shaped literal sits in the repo.
+FAKE_TOKEN = "github" + "_pat_" + "x1" * 41
+
+
+def _no_clipboard():
+    raise AssertionError("clipboard should not be read")
+
+
+def test_read_token_typed(capsys):
+    assert s.read_token(ask=lambda _p: FAKE_TOKEN + "\r\n", clipboard=_no_clipboard) == FAKE_TOKEN
+    out = capsys.readouterr().out
+    assert f"Token received ({len(FAKE_TOKEN)} characters)" in out
+    assert FAKE_TOKEN not in out
+
+
+@pytest.mark.parametrize("typed", ["", "\x16", "  "])
+def test_read_token_falls_back_to_clipboard(typed, capsys):
+    assert s.read_token(ask=lambda _p: typed, clipboard=lambda: FAKE_TOKEN) == FAKE_TOKEN
+    out = capsys.readouterr().out
+    assert "read from the clipboard" in out
+    assert FAKE_TOKEN not in out
+
+
+def test_read_token_nothing_usable(capsys):
+    assert s.read_token(ask=lambda _p: "", clipboard=lambda: "some other text") == ""
+    assert s.read_token(ask=lambda _p: "wrong", clipboard=lambda: "") == "wrong"
+    assert "Checking it anyway" in capsys.readouterr().out
+
+
+def test_setup_without_any_token_stops(tmp_path, monkeypatch):
+    monkeypatch.setattr(s, "read_token", lambda: "")
+    with pytest.raises(RuntimeError, match="No token received"):
+        s.setup(tmp_path / "config.json")
+
+
+def test_config_accepts_bom(tmp_path):
+    p = tmp_path / "config.json"
+    p.write_bytes(b"\xef\xbb\xbf" + json.dumps({"repo": "me/setlab-data", "token": "t"}).encode())
+    assert s.Config.load(p).repo == "me/setlab-data"

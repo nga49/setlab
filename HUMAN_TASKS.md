@@ -4,12 +4,12 @@
 
 | | |
 |---|---|
-| 🌐 App URL | **https://nga49.github.io/setlab/** · goes live after steps A and B below |
+| 🌐 App URL | **https://nga49.github.io/setlab/** · live |
 | ✅ Built and tested | Sets (organizer, 3 versions, editor, party sets, tape rack) · Live (now playing, next 5, request, path, bridge, gig mode) · Camelot wheel · Library (5,000-track list, filters, edits, quick-add, insights, gap finder) · Practice (history, ratings, exports) · Settings (sync, AI, backup) · offline PWA |
 | 🔵 Library sync | Ready: laptop tool in `sync/` (rekordbox 6/7 via pyrekordbox 0.5, XML fallback). Needs steps C to F |
 | 🟣 AI | Ready: estimates, missing tracks finder, gap picks, mixing tips. Needs a Claude API key (step H). Without it everything else works |
 | 🎧 Spotify | Not built: Spotify's 2026 Development Mode rules (Premium owner, endpoint changes) could not be verified. Missing tracks use web search instead |
-| ⏭️ Your next step | Step A below |
+| ⏭️ Your next step | Step F below (A to E done) |
 
 ### Your steps, in order
 
@@ -20,14 +20,9 @@
 | C | 💻 github.com | New **private** repo **setlab-data** (tick "Add a README") |
 | D | 💻 GitHub → Settings → Developer settings → Fine-grained tokens | **Token A**: only `setlab-data`, Contents **Read and write**, 1 year. **Token B**: only `setlab-data`, Contents **Read-only**, 1 year |
 | E | 💻 Laptop | Install Python 3.11+ (python.org, tick "Add Python to PATH"). Open rekordbox once |
-| F | 💻 Laptop | Download `setlab` as ZIP (after A) → unzip → `sync` → double-click **install.bat** → paste token A → wait for "✅ … tracks synced" |
+| F | 💻 Laptop | Download `setlab` as ZIP → unzip → `sync`. If Windows blocks install.bat: address bar → `powershell` → `Get-ChildItem -Recurse \| Unblock-File`. Double-click **install.bat** → paste token A (it stays invisible, that is normal) → Enter → wait for "✅ … tracks synced" |
 | G | 📱 Phone | Open the app URL → Share → **Add to Home Screen** → ⚙️ → Library sync → `nga49/setlab-data` + token B → **Test connection** |
 | H | 📱 Phone, optional | console.anthropic.com → API key → app ⚙️ → AI (budget €5/month by default) |
-
----|---|
-| 🌐 App URL | _not live yet_ |
-| ✅ Live features | _none yet_ |
-| ⏭️ Your next step | Step 1 below |
 
 ---
 
@@ -62,7 +57,7 @@
 |---|---|
 | 8 | Install **Python 3.11+** from python.org · tick ✅ "Add Python to PATH" |
 | 9 | Download the **setlab** repo as ZIP · unzip · open folder `sync` |
-| 10 | Double-click **install.bat** · paste token **A** when asked · press Enter |
+| 10 | Double-click **install.bat** · paste token **A** when asked (nothing appears, that is normal) · press Enter. Blocked by Smart App Control? See `sync/README.md` step 3 |
 | 11 | Wait for "✅ tracks synced" |
 
 Then it runs by itself: at logon, every 2 h, and at 23:00. 🎧 Add and analyze tracks in rekordbox as usual, nothing else.

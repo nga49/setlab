@@ -86,3 +86,5 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | Accessibility: axe-core (WCAG 2 A/AA) in the final smoke test across all tabs, wheel and settings: 0 violations; contrast of token pairs checked by hand where axe cannot (textured backgrounds) | Phase 8 accessibility pass |
 | 2026-11-01 | Party presets and genre families editable as validated JSON in Settings › Advanced (collapsible) | PRODUCT.md Settings; small, safe, no extra UI weight |
 | 2026-11-01 | Deployment needs the build branch merged into `main` and Pages set to GitHub Actions; the live URL will be https://nga49.github.io/setlab/ | The session may not push to `main`; Pages settings are Nico's |
+| 2026-11-01 | Token prompt confirms "Token received (N characters)" and falls back to the clipboard (PowerShell `Get-Clipboard`) when the paste does not arrive; the token is never printed | Nico could not tell the hidden paste had worked |
+| 2026-11-01 | Docs: Smart App Control blocks downloaded .bat files; fix is `Unblock-File` on the unzipped folder (scheduled runs use pythonw.exe, not the .bat) | Seen on Nico's Windows 11 laptop |
