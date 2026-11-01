@@ -7,7 +7,7 @@ It only reads rekordbox. It never changes your rekordbox library.
 
 1. Install **Python 3.11 or newer** from python.org. Tick **Add Python to PATH**.
 2. Download the `setlab` repo as a ZIP from GitHub and unzip it.
-3. Open the `sync` folder. Windows 11 may refuse install.bat with "Smart App Control blocked a file that may be unsafe" (it blocks .bat files that came from the internet). If so: click **Okay**, click the folder's address bar, type `powershell`, press Enter, then run `Get-ChildItem -Recurse | Unblock-File` and close that window.
+3. Open the `sync` folder. Windows 11 may refuse install.bat with "Smart App Control blocked a file that may be unsafe" (it blocks .bat files that came from the internet). If so: click **Okay**. With the `sync` folder open (you see install.bat in it), click the address bar, type `powershell`, press Enter. The prompt must end in `\sync>`. Run `if (Test-Path .\setlab_sync.py) { Get-ChildItem -Recurse | Unblock-File; 'Done' } else { 'Wrong folder' }` and close that window.
 4. Double-click **install.bat**.
 5. Copy **token A**, then paste it when asked (right-click or Ctrl+V). **Nothing appears while you paste: that is normal.** Press Enter. You should see "Token received (… characters)". If pasting does not work, just press Enter: the token is read from the clipboard.
 6. Press Enter to keep the repo name `setlab-data`.

@@ -20,7 +20,7 @@
 | C | 💻 github.com | New **private** repo **setlab-data** (tick "Add a README") |
 | D | 💻 GitHub → Settings → Developer settings → Fine-grained tokens | **Token A**: only `setlab-data`, Contents **Read and write**, 1 year. **Token B**: only `setlab-data`, Contents **Read-only**, 1 year |
 | E | 💻 Laptop | Install Python 3.11+ (python.org, tick "Add Python to PATH"). Open rekordbox once |
-| F | 💻 Laptop | Download `setlab` as ZIP → unzip → `sync`. If Windows blocks install.bat: address bar → `powershell` → `Get-ChildItem -Recurse \| Unblock-File`. Double-click **install.bat** → paste token A (it stays invisible, that is normal) → Enter → wait for "✅ … tracks synced" |
+| F | 💻 Laptop | Download `setlab` as ZIP → unzip → `sync`. If Windows blocks install.bat: inside `sync`, address bar → `powershell` → `if (Test-Path .\setlab_sync.py) { Get-ChildItem -Recurse \| Unblock-File; 'Done' } else { 'Wrong folder' }`. Double-click **install.bat** → paste token A (it stays invisible, that is normal) → Enter → wait for "✅ … tracks synced" |
 | G | 📱 Phone | Open the app URL → Share → **Add to Home Screen** → ⚙️ → Library sync → `nga49/setlab-data` + token B → **Test connection** |
 | H | 📱 Phone, optional | console.anthropic.com → API key → app ⚙️ → AI (budget €5/month by default) |
 
