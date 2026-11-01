@@ -6,10 +6,10 @@
 |---|---|
 | 🌐 App URL | **https://nga49.github.io/setlab/** · live |
 | ✅ Built and tested | Sets (organizer, 3 versions, editor, party sets, tape rack) · Live (now playing, next 5, request, path, bridge, gig mode) · Camelot wheel · Library (5,000-track list, filters, edits, quick-add, insights, gap finder) · Practice (history, ratings, exports) · Settings (sync, AI, backup) · offline PWA |
-| 🔵 Library sync | Ready: laptop tool in `sync/` (rekordbox 6/7 via pyrekordbox 0.5, XML fallback). Needs steps C to F |
+| 🔵 Library sync | Working: laptop installed, first sync from rekordbox master.db succeeded. Phone needs step G |
 | 🟣 AI | Ready: estimates, missing tracks finder, gap picks, mixing tips. Needs a Claude API key (step H). Without it everything else works |
 | 🎧 Spotify | Not built: Spotify's 2026 Development Mode rules (Premium owner, endpoint changes) could not be verified. Missing tracks use web search instead |
-| ⏭️ Your next step | Step F below (A to E done) |
+| ⏭️ Your next step | Step G below (A to F done) |
 
 ### Your steps, in order
 
