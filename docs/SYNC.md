@@ -31,6 +31,7 @@ Goal: Nico never exports anything by hand. After he adds and analyzes tracks in 
 - Create a venv in `%APPDATA%\setlab-sync\venv`, install requirements.
 - Ask in the console for: GitHub token (hidden input), data repo name (default `setlab-data`). Save config.
 - Register Windows Task Scheduler tasks: at logon + every 2 hours + daily 23:00, run hidden (`pythonw`). Use `schtasks` so no admin rights are needed if possible.
+  - **Changed 2026-11-01 at Nico's request:** a hidden background watcher (`setlab_sync.py --watch`, started at logon by a Startup shortcut) syncs each time rekordbox closes, plus once at logon. The timed tasks are removed on install. See DECISIONS.md.
 - Run one sync immediately and print "✅ 1248 tracks synced" or the error with the fix.
 
 ## 4. App side

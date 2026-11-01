@@ -1,16 +1,19 @@
 """
 SETLAB sync: rekordbox -> private GitHub data repo (tracks.json).
 
-Runs on Nico's Windows laptop (scheduled by install.bat). Reads the rekordbox
+Runs on Nico's Windows laptop (started by install.bat). Reads the rekordbox
 library read-only with pyrekordbox (master.db), or a rekordbox XML export as a
 fallback, builds tracks.json (docs/DATA.md) and pushes it to the private data
 repo through the GitHub REST contents API. Only pushes when the data changed.
 
 Usage:
-  python setlab_sync.py                 sync once (what the scheduled task runs)
+  python setlab_sync.py                 sync once
   python setlab_sync.py --setup         ask for the token and data repo, save config
-  python setlab_sync.py --install-schedule   register logon / every 2 h / 23:00 runs
-  python setlab_sync.py --remove-schedule    remove them
+  python setlab_sync.py --watch         stay in the background: sync each time rekordbox
+                                        closes (and once at start), convert phone playlists
+  python setlab_sync.py --install-schedule   start the watcher at logon, and now
+  python setlab_sync.py --remove-schedule    stop it and remove it from logon
+  python setlab_sync.py --stop-watch    stop a running watcher (used by install.bat)
   python setlab_sync.py --xml FILE      use this rekordbox XML instead of master.db
   python setlab_sync.py --dry-run       build tracks.json next to the config, do not push
   python setlab_sync.py --playlists [FILES]  turn playlists exported by the phone into
@@ -31,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.parse
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
@@ -46,6 +50,7 @@ TRACKS_PATH = "tracks.json"
 API = "https://api.github.com"
 API_VERSION = "2022-11-28"
 # Task names become file names under C:\Windows\System32\Tasks: no \\ / : * ? " < > |
+# Timed tasks of the first version (every 2 hours, 23:00). Replaced by the watcher; removed on install.
 TASK_NAMES = ("SETLAB sync (every 2 hours)", "SETLAB sync (daily 23h)")
 STARTUP_LINK = "SETLAB sync.lnk"
 
@@ -697,30 +702,177 @@ def _pythonw() -> str:
     return str(w if w.exists() else exe)
 
 
+def _startup_link() -> Path:
+    return Path(os.environ.get("APPDATA", "")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / STARTUP_LINK
+
+
+def _delete_legacy_tasks() -> None:
+    for name in TASK_NAMES:
+        subprocess.run(["schtasks", "/Delete", "/F", "/TN", name], check=False, capture_output=True)
+
+
 def install_schedule() -> None:
-    """Every 2 hours and daily at 23:00 via schtasks (no admin needed), plus a Startup
-    shortcut for 'at logon' (schtasks ONLOGON usually needs admin rights)."""
+    """Starts the watcher at every logon (Startup shortcut, no admin rights needed) and right now.
+    The timed tasks of the first version are removed."""
     script = str(Path(__file__).resolve())
-    tr = f'"{_pythonw()}" "{script}"'
-    subprocess.run(["schtasks", "/Create", "/F", "/TN", TASK_NAMES[0], "/SC", "HOURLY", "/MO", "2", "/TR", tr], check=True)
-    subprocess.run(["schtasks", "/Create", "/F", "/TN", TASK_NAMES[1], "/SC", "DAILY", "/ST", "23:00", "/TR", tr], check=True)
-    startup = Path(os.environ["APPDATA"]) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / STARTUP_LINK
+    _delete_legacy_tasks()
     ps = (
         "$s=(New-Object -ComObject WScript.Shell).CreateShortcut($env:LNK);"
         "$s.TargetPath=$env:TGT;$s.Arguments=$env:ARGS;$s.WindowStyle=7;$s.Save()"
     )
-    env = dict(os.environ, LNK=str(startup), TGT=_pythonw(), ARGS=f'"{script}"')
+    env = dict(os.environ, LNK=str(_startup_link()), TGT=_pythonw(), ARGS=f'"{script}" --watch')
     subprocess.run(["powershell", "-NoProfile", "-Command", ps], check=True, env=env)
-    print("Scheduled: at logon, every 2 hours, and daily at 23:00.")
+    stop_watch()
+    start_watch()
+    print("Sync set: each time you close rekordbox, and once when you log in to Windows.")
 
 
 def remove_schedule() -> None:
-    for name in TASK_NAMES:
-        subprocess.run(["schtasks", "/Delete", "/F", "/TN", name], check=False)
-    startup = Path(os.environ.get("APPDATA", "")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / STARTUP_LINK
-    if startup.exists():
-        startup.unlink()
-    print("Schedule removed.")
+    stop_watch()
+    _delete_legacy_tasks()
+    link = _startup_link()
+    if link.exists():
+        link.unlink()
+    print("Automatic sync removed.")
+
+
+# ---------------------------------------------------------------------------
+# Watcher: sync right after rekordbox closes
+
+WATCH_POLL_S = 15  # how often to look at running programs
+WATCH_SETTLE_S = 15  # after rekordbox closes, let it finish writing its database
+WATCH_START_DELAY_S = 60  # at logon, let the network come up first
+# Main app only. rekordboxAgent.exe keeps running in the background after rekordbox closes.
+REKORDBOX_PROCESS_NAMES = {"rekordbox.exe", "rekordbox"}
+
+
+def rekordbox_running(names: Iterable[str] | None = None) -> bool:
+    if names is None:
+        import psutil  # installed with pyrekordbox
+
+        names = (p.info.get("name") or "" for p in psutil.process_iter(["name"]))
+    return any(n.lower() in REKORDBOX_PROCESS_NAMES for n in names)
+
+
+def _watcher_pids() -> list[int]:
+    """Other running watchers (found by command line, so no lock file can go stale). Our own
+    parents are skipped: on Windows a venv's pythonw.exe is a launcher that starts the real
+    interpreter as a child with the same command line."""
+    import psutil
+
+    me = psutil.Process()
+    skip = {me.pid} | {p.pid for p in me.parents()}
+    out = []
+    for p in psutil.process_iter(["pid", "cmdline"]):
+        cl = p.info.get("cmdline") or []
+        if p.info["pid"] not in skip and "--watch" in cl and any(str(c).endswith("setlab_sync.py") for c in cl):
+            out.append(p.info["pid"])
+    return out
+
+
+def stop_watch() -> None:
+    import psutil
+
+    procs = []
+    for pid in _watcher_pids():
+        try:
+            pr = psutil.Process(pid)
+            pr.terminate()
+            procs.append(pr)
+        except psutil.Error:
+            pass
+    psutil.wait_procs(procs, timeout=5)
+
+
+def start_watch() -> None:
+    """Starts the watcher detached, so it keeps running after the installer window closes."""
+    flags = getattr(subprocess, "DETACHED_PROCESS", 0) | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+    subprocess.Popen(
+        [_pythonw(), str(Path(__file__).resolve()), "--watch"],
+        creationflags=flags, close_fds=True,
+        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+
+
+def convert_phone_playlists() -> int:
+    """Playlists exported by the phone (setlab-*.xml in Downloads) -> rekordbox XML. Best effort."""
+    files = find_phone_exports([])
+    if not files:
+        return 0
+    try:
+        n, _ = resolve_playlists(files, _db_locations(), playlists_output())
+        log.info("%d phone playlist(s) ready for rekordbox", n)
+        return n
+    except Exception as e:  # pragma: no cover - best effort
+        log.warning("Phone playlists not converted: %s", type(e).__name__)
+        return 0
+
+
+def run_once(cfg_path: Path) -> None:
+    """One sync for the watcher: logs the result, never raises."""
+    try:
+        log.info("✅ %s", sync(Config.load(cfg_path)))
+    except GitHubError as e:
+        log.error("❌ %s", e)
+    except Exception as e:
+        log.error("❌ %s: %s", type(e).__name__, e)
+    convert_phone_playlists()
+
+
+def _exports_signature() -> tuple:
+    out = []
+    for f in find_phone_exports([]):
+        try:
+            out.append((f.name, f.stat().st_mtime_ns))
+        except OSError:
+            pass
+    return tuple(sorted(out))
+
+
+def watch(
+    cfg_path: Path,
+    *,
+    is_running=rekordbox_running,
+    sleep=time.sleep,
+    run=run_once,
+    exports=_exports_signature,
+    convert=convert_phone_playlists,
+    others=_watcher_pids,
+    max_polls: int | None = None,
+) -> int:
+    """Background loop: one sync at start (catches up after the laptop was off), then one each
+    time rekordbox closes. New phone playlists in Downloads are converted within seconds."""
+    if others():
+        log.info("Watcher already running.")
+        return 0
+    log.info("Watching rekordbox: syncing each time it closes.")
+    sleep(WATCH_START_DELAY_S)
+    try:
+        run(cfg_path)
+    except Exception as e:  # keep watching whatever happens
+        log.error("❌ watcher: %s: %s", type(e).__name__, e)
+    was, seen, polls = is_running(), exports(), 0
+    while max_polls is None or polls < max_polls:
+        sleep(WATCH_POLL_S)
+        polls += 1
+        try:
+            now = is_running()
+            if was and not now:
+                log.info("rekordbox closed: syncing")
+                sleep(WATCH_SETTLE_S)
+                run(cfg_path)
+                seen = exports()
+            elif now and not was:
+                log.info("rekordbox opened")
+            was = now
+            sig = exports()
+            if sig != seen:
+                seen = sig
+                if sig:
+                    convert()
+        except Exception as e:  # keep watching whatever happens
+            log.error("❌ watcher: %s: %s", type(e).__name__, e)
+    return 0
 
 
 # ---------------------------------------------------------------------------
@@ -736,6 +888,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--setup", action="store_true")
     p.add_argument("--install-schedule", action="store_true")
     p.add_argument("--remove-schedule", action="store_true")
+    p.add_argument("--watch", action="store_true")
+    p.add_argument("--stop-watch", action="store_true")
     p.add_argument("--xml", type=Path)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--playlists", nargs="*", type=Path)
@@ -752,6 +906,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.remove_schedule:
             remove_schedule()
             return 0
+        if args.stop_watch:
+            stop_watch()
+            return 0
+        if args.watch:
+            return watch(cfg_path)
         cfg = Config.load(cfg_path)
         if args.playlists is not None:
             files = find_phone_exports(args.playlists)
@@ -768,14 +927,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         report = sync(cfg, xml_override=args.xml, dry_run=args.dry_run)
         log.info("✅ %s", report)
-        # Phone playlists waiting in Downloads are converted on every run too.
-        files = find_phone_exports([])
-        if files:
-            try:
-                n, _ = resolve_playlists(files, _db_locations(), playlists_output())
-                log.info("%d phone playlist(s) ready for rekordbox", n)
-            except Exception as e:  # pragma: no cover - best effort
-                log.warning("Phone playlists not converted: %s", type(e).__name__)
+        convert_phone_playlists()
         return 0
     except GitHubError as e:
         log.error("❌ %s", e)

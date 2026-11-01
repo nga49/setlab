@@ -13,8 +13,9 @@ It only reads rekordbox. It never changes your rekordbox library.
 6. Press Enter to keep the repo name `setlab-data`.
 7. Wait for **✅ … tracks synced**.
 
-From then on it runs by itself: when you log in, every 2 hours, and at 23:00.
-It only uploads when something changed.
+From then on it runs by itself, quietly in the background: it syncs **each time you close rekordbox**, and once when you log in to Windows (to catch up). It only uploads when something changed. On the phone, the app fetches the new library when you open it, or tap ↻ in the Library tab.
+
+Tracks you analyze later get their BPM and key in the app at the next sync, replacing any AI estimate. Values you edited yourself in the app stay as you set them.
 
 ## Everyday use
 
@@ -30,7 +31,7 @@ Newer rekordbox versions sometimes change the database. The tool then uses a rek
 ## Playlists from the phone (Send to rekordbox)
 
 1. In the app, open a saved set and tap **Send to rekordbox**. Save or send the `setlab-….xml` file to this laptop's **Downloads** folder.
-2. Double-click **send_to_rekordbox.bat** (or wait for the next automatic sync).
+2. Wait about 15 seconds: the sync tool converts it on its own. Or double-click **send_to_rekordbox.bat**.
 3. In rekordbox, once: **Preferences > Advanced > Database > rekordbox xml**, choose `Music\setlab\setlab-playlists.xml`. Also turn on **rekordbox xml** under **Preferences > View > Layout** so it shows in the tree.
 4. In the tree on the left: **rekordbox xml > Playlists > SETLAB**, right-click your set, **Import Playlist**.
 

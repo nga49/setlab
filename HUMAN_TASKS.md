@@ -11,7 +11,7 @@ The app is called **Awesome Mix** (repo and URL keep the name `setlab`).
 | 🔵 Library sync | Working: laptop syncs rekordbox master.db, phone connected |
 | 🟣 AI | Ready: estimates, missing tracks finder, gap picks, mixing tips. Needs a Claude API key (step H). Without it everything else works |
 | 🎧 Spotify | Not built: Spotify's 2026 Development Mode rules (Premium owner, endpoint changes) could not be verified. Missing tracks use web search instead |
-| ⏭️ Your next step | Rows 21 and 22 under "Added by Claude Code" (A to G done) |
+| ⏭️ Your next step | Merge the new pull request, then row 24 (laptop) and row 22 (font) under "Added by Claude Code" |
 
 ### Your steps, in order
 
@@ -62,7 +62,7 @@ The app is called **Awesome Mix** (repo and URL keep the name `setlab`).
 | 10 | Double-click **install.bat** · paste token **A** when asked (nothing appears, that is normal) · press Enter. Blocked by Smart App Control? See `sync/README.md` step 3 |
 | 11 | Wait for "✅ tracks synced" |
 
-Then it runs by itself: at logon, every 2 h, and at 23:00. 🎧 Add and analyze tracks in rekordbox as usual, nothing else.
+Then it runs by itself: each time you close rekordbox, and once at logon. 🎧 Add and analyze tracks in rekordbox as usual, nothing else.
 
 ---
 
@@ -98,13 +98,14 @@ Without step 14: wheel, organizer, live, library all work. Only AI search and es
 | 21 | 💻 github.com | Merge the pull request for branch `claude/autonomous-project-build-8wbcju` into `main` | Puts the new name, the Look settings and the bottom gap fix online |
 | 22 | 📱 Phone | Put `Guardians.ttf` in the Files app (AirDrop it, or save the ZIP to iCloud Drive and tap it to unzip). App ⚙️ → **Look** → **Choose font file** → pick it | The font's license is "All Rights Reserved", so it is never put in the public repo or website: it lives only on your phone |
 | 23 | 📱 Phone, optional | To see "Awesome Mix" under the home screen icon: ⚙️ → Backup → tick **Include API key and tokens** → **Export**. Remove the icon, open the URL in Safari, Share → **Add to Home Screen**, then ⚙️ → Backup → **Import** | iOS keeps the name given when the icon was added. Removing the icon can erase the app's data on the phone, hence the backup |
+| 24 | 💻 Laptop | Delete the old downloads, download the ZIP again (https://github.com/nga49/setlab/archive/refs/heads/main.zip), unblock it (`sync/README.md` step 3), double-click **install.bat**, press Enter at both questions | Switches the laptop to "sync each time rekordbox closes" |
 
 ### 🎚️ rekordbox playlists (Send to rekordbox)
 
 | # | Do this |
 |---|---|
 | 1 | 📱 App → saved set → **Export** → **Send to rekordbox (XML)** → save or send the file to the laptop's **Downloads** folder |
-| 2 | 💻 Double-click `sync\send_to_rekordbox.bat` (or wait for the next automatic sync) |
+| 2 | 💻 Wait about 15 seconds (converted automatically), or double-click `sync\send_to_rekordbox.bat` |
 | 3 | 💻 rekordbox: tree on the left → **rekordbox xml** → **SETLAB** → right-click your set → **Import Playlist** |
 
 Menu names can differ slightly between rekordbox versions.
