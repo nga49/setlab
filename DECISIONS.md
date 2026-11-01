@@ -47,3 +47,8 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | Set editor: grip handle drag (pointer events, keyboard arrows as fallback), swipe left > 110 px removes, visible ✕ as accessible alternative; rescoring runs on every change (< 5 ms for 40 tracks) | DJ-booth touch + accessibility |
 | 2026-11-01 | Custom CSS lives in Tailwind `@layer base` / `@layer components` | Unlayered `button { color: inherit }` was overriding every text-colour utility |
 | 2026-11-01 | Single precached JS bundle (~160 kB gzip), chunk warning raised to 900 kB | Offline PWA loads everything once; splitting adds requests without benefit |
+| 2026-11-01 | Live piano keys: ◀◀ back (undo last play) · ▶ REQUEST · ⇄ bridge finder · ⏏ change track; END session in the session strip | DESIGN.md piano keys (◀◀ · ▶ REQUEST · ⏸ · ⏏) mapped to the Live actions that exist |
+| 2026-11-01 | A live session is reused until ended or idle for 4 h; played tracks are excluded from Next | PRODUCT.md "session history kept" |
+| 2026-11-01 | Requests not in the library become a virtual track (manual BPM/key/genre, or AI estimate in Phase 6) and get the same 3 blocks via a temporary graph | PRODUCT.md request handler fallback |
+| 2026-11-01 | Path "~N tracks" counts intermediates + the request; minutes = intermediates' lengths minus overlaps (4 min if unknown) | ENGINE.md §8 |
+| 2026-11-01 | Gig mode follows DESIGN.md (walnut, paper text ≥ 20 px, mustard BPM, no textures, reels only); app header and tab bar hidden, GIG switch stays to exit; Wake Lock re-acquired on visibility change | DESIGN.md wins over PRODUCT.md's "pure black" on theme |

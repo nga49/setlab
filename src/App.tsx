@@ -34,6 +34,7 @@ export default function App() {
 
   return (
     <div className={cx('wood-grain flex h-full flex-col', gig && 'gig bg-walnut')}>
+      {!gig ? (
       <header className="safe-top flex shrink-0 items-center justify-between gap-3 px-4 pb-2">
         <div className="flex items-center gap-2">
           <span className="font-title text-[19px] leading-none text-mustard" data-testid="app-name">
@@ -59,6 +60,9 @@ export default function App() {
           <GearSixIcon size={24} weight="duotone" />
         </button>
       </header>
+      ) : (
+        <div className="safe-top" />
+      )}
 
       <main className="min-h-0 w-full max-w-full flex-1 overflow-x-hidden overflow-y-auto overscroll-contain" id="main">
         <div className="mx-auto w-full max-w-[720px] px-4 pb-40">
@@ -71,6 +75,7 @@ export default function App() {
 
       <WheelButton />
 
+      {!gig ? (
       <nav
         className="safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-walnut-3 bg-walnut-deep/95"
         aria-label="Main"
@@ -99,6 +104,7 @@ export default function App() {
           })}
         </ul>
       </nav>
+      ) : null}
 
       <SettingsSheet />
       {app.wheelOpen ? <WheelOverlay /> : null}

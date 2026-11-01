@@ -71,6 +71,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
     repeating-linear-gradient(88deg, rgb(255 255 255 / 0.02) 0 1px, transparent 1px 11px);
 }
 .gig .wood-grain::after, .gig.wood-grain::after { display: none; }
+/* Gig mode: no textures */
+.gig .brushed { background: #C9C2B4; }
 
 /* Brushed aluminium faceplate */
 .brushed {

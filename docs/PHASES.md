@@ -31,10 +31,10 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: with demo data, a 60-min Journey set with 2 locks generates in < 1 s and lands within ±5% duration.
 
 ## Phase 4 · Live tab
-- [ ] Now playing search, Top 5 next with filters, session logging
-- [ ] Request handler: before, after, path from now
-- [ ] Bridge finder
-- [ ] Gig mode + wake lock
+- [x] Now playing search, Top 5 next with filters, session logging
+- [x] Request handler: before, after, path from now
+- [x] Bridge finder
+- [x] Gig mode + wake lock
 - **Accept**: Playwright test: set now playing → pick a next track → request a track → path shown, all at 390×844.
 
 ## Phase 5 · Library + Sync
