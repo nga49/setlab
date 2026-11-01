@@ -19,7 +19,7 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: coverage ≥ 90% on `src/engine`, performance budgets met in a benchmark test.
 
 ## Phase 2 · Camelot wheel
-- [ ] Full-screen wheel, highlights, library counts, tap-to-filter
+- [x] Full-screen wheel, highlights, library counts, tap-to-filter
 - **Accept**: opens < 150 ms, works offline, correct highlights for 8A, 12B, 1A (wrap).
 
 ## Phase 3 · Sets tab

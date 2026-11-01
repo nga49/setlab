@@ -3,7 +3,7 @@ import { BooksIcon, CassetteTapeIcon, GearSixIcon, NotePencilIcon, PlayIcon } fr
 import { APP_NAME } from './config'
 import { S } from './strings'
 import { TABS, type TabId, useApp } from './state/app'
-import { useRawLibrary } from './data/library'
+import { useLibrary } from './data/LibraryProvider'
 import { useSettings } from './db/settings'
 import { cx } from './ui/kit'
 import { SetsTab } from './tabs/SetsTab'
@@ -24,7 +24,7 @@ const TAB_ICONS: Record<TabId, typeof PlayIcon> = {
 
 export default function App() {
   const app = useApp()
-  const { demo } = useRawLibrary()
+  const { demo } = useLibrary()
   const settings = useSettings()
   const gig = app.tab === 'live' && settings.gigMode
 

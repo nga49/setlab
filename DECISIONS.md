@@ -36,3 +36,7 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | Benchmarks (build container, Node 22): 60-min Journey with 2 locks 32 ms; 40-track organizer, 3 versions 244 ms; 2,000-track fill, 3 versions 204 ms; path on 5,000 tracks 313 ms | Budgets: 300 ms, 1.5 s; a mid phone is slower but has headroom |
 | 2026-11-01 | Fuzzy matching: word-level similarity (each word vs closest word, bigram Dice), artist 45% + title 55%, remix-aware (×0.9 one-sided, ×0.75 different remix or strict ownership); threshold 0.8 | Character-only similarity confused "Track K" with "Track Q" |
 | 2026-11-01 | Party free text is parsed offline (genres, "no X" exclusions, decades like 2000s / 80s) | Works with zero AI; AI only adds gap suggestions |
+| 2026-11-01 | Wheel layout: number n at clock position n (12 at the top), B outer ring, A inner ring; highlights use colour plus a symbol (● selected, ✓ mixes, ⬆ boost) | Readable like a clock; DESIGN.md "colour never alone" |
+| 2026-11-01 | Wheel imported eagerly (not lazy) and drawn as plain SVG; measured 19 to 39 ms to open in the e2e test | 150 ms budget, no network |
+| 2026-11-01 | Swipe-down to close starts from the header or the dial only | Keeps taps on keys and scrolling of the count list working |
+| 2026-11-01 | Effective track values computed once in a LibraryProvider (override > rekordbox > estimate > heuristic) with a source per field; graph cached per library + settings | One source of truth for every tab |

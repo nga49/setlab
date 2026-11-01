@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import './styles/index.css'
 import App from './App'
 import { AppStateProvider } from './state/app'
+import { LibraryProvider } from './data/LibraryProvider'
 import { ToastProvider } from './ui/Toast'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ToastProvider>
       <AppStateProvider>
-        <App />
+        <LibraryProvider>
+          <App />
+        </LibraryProvider>
       </AppStateProvider>
     </ToastProvider>
   </StrictMode>,
