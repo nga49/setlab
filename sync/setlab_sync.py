@@ -622,12 +622,19 @@ def clipboard_text() -> str:
         return ""
     try:
         r = subprocess.run(
-            ["powershell", "-NoProfile", "-Command", "Get-Clipboard -Raw"],
+            ["powershell", "-NoProfile", "-Command", "Get-Clipboard"],
             capture_output=True, text=True, timeout=20,
         )
     except (OSError, subprocess.SubprocessError):
         return ""
     return (r.stdout or "").strip()
+
+
+SETUP_401 = (
+    "GitHub refused this token. Usually the paste did not arrive in full. "
+    "Copy token A again on GitHub, run install.bat again, and at the Token A prompt "
+    "just press Enter: the token is then read from the clipboard."
+)
 
 
 def read_token(ask=getpass.getpass, clipboard=clipboard_text) -> str:
@@ -665,10 +672,17 @@ def setup(cfg_path: Path) -> Config:
         import requests
 
         r = requests.get(f"{API}/user", headers={"Authorization": f"Bearer {cfg.token}", "X-GitHub-Api-Version": API_VERSION}, timeout=30)
+        if r.status_code == 401:
+            raise GitHubError(401, SETUP_401)
         if r.status_code != 200:
             raise GitHubError(r.status_code, explain(r.status_code))
         cfg.repo = f"{r.json()['login']}/{name}"
-    GitHub(cfg.token, cfg.repo).check()
+    try:
+        GitHub(cfg.token, cfg.repo).check()
+    except GitHubError as e:
+        if e.status == 401:
+            raise GitHubError(401, SETUP_401) from None
+        raise
     cfg.save(cfg_path)
     print(f"Saved. Data repo: {cfg.repo}")
     return cfg

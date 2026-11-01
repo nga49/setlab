@@ -274,3 +274,17 @@ def test_config_accepts_bom(tmp_path):
     p = tmp_path / "config.json"
     p.write_bytes(b"\xef\xbb\xbf" + json.dumps({"repo": "me/setlab-data", "token": "t"}).encode())
     assert s.Config.load(p).repo == "me/setlab-data"
+
+
+def test_setup_401_explains_the_paste(tmp_path, monkeypatch):
+    class R:
+        status_code = 401
+
+    import requests
+
+    monkeypatch.setattr(s, "read_token", lambda: FAKE_TOKEN)
+    monkeypatch.setattr("builtins.input", lambda _p="": "")
+    monkeypatch.setattr(requests, "get", lambda *a, **k: R())
+    with pytest.raises(s.GitHubError, match="press Enter"):
+        s.setup(tmp_path / "config.json")
+    assert not (tmp_path / "config.json").exists()
