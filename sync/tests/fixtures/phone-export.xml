@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DJ_PLAYLISTS Version="1.0.0">
+  <PRODUCT Name="SETLAB" Version="1" Company=""/>
+  <COLLECTION Entries="2">
+    <TRACK TrackID="101" Name="Demo Track A" Artist="Demo Artist 01"/>
+    <TRACK TrackID="999" Name="Demo Track Missing" Artist="Demo Artist 99"/>
+  </COLLECTION>
+  <PLAYLISTS>
+    <NODE Type="0" Name="ROOT" Count="1">
+      <NODE Name="Saturday warm-up" Type="1" KeyType="0" Entries="2">
+        <TRACK Key="101"/>
+        <TRACK Key="999"/>
+      </NODE>
+    </NODE>
+  </PLAYLISTS>
+</DJ_PLAYLISTS>

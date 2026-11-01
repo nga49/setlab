@@ -1,4 +1,4 @@
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useRef, useState } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { cx } from './kit'
 
@@ -11,6 +11,7 @@ export function VirtualList<T>({
   getKey,
   testId,
   overscan = 8,
+  onPullRefresh,
 }: {
   items: T[]
   rowHeight?: number
@@ -19,8 +20,13 @@ export function VirtualList<T>({
   getKey: (item: T) => string
   testId?: string
   overscan?: number
+  /** Pull down at the top to refresh (e.g. library sync). */
+  onPullRefresh?: () => Promise<unknown>
 }) {
   const parent = useRef<HTMLDivElement>(null)
+  const pull = useRef<{ y0: number } | null>(null)
+  const [pullPx, setPullPx] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
   const v = useVirtualizer({
     count: items.length,
     getScrollElement: () => parent.current,
@@ -30,7 +36,33 @@ export function VirtualList<T>({
     initialRect: { width: 390, height: 600 },
   })
   return (
-    <div ref={parent} className={cx('min-h-0 overflow-y-auto overscroll-contain', className)} data-testid={testId}>
+    <div
+      ref={parent}
+      className={cx('min-h-0 overflow-y-auto overscroll-contain', className)}
+      data-testid={testId}
+      onTouchStart={(e) => {
+        if (onPullRefresh && parent.current?.scrollTop === 0) pull.current = { y0: e.touches[0]!.clientY }
+      }}
+      onTouchMove={(e) => {
+        if (!pull.current) return
+        setPullPx(Math.max(0, Math.min(90, (e.touches[0]!.clientY - pull.current.y0) * 0.5)))
+      }}
+      onTouchEnd={async () => {
+        const go = pullPx > 60
+        pull.current = null
+        setPullPx(0)
+        if (go && onPullRefresh) {
+          setRefreshing(true)
+          await onPullRefresh()
+          setRefreshing(false)
+        }
+      }}
+    >
+      {onPullRefresh && (pullPx > 0 || refreshing) ? (
+        <div className="flex items-center justify-center font-mono text-[12px] text-paper-dim" style={{ height: refreshing ? 36 : pullPx }} role="status">
+          {refreshing ? 'Syncing…' : pullPx > 60 ? 'Release to sync' : 'Pull to sync'}
+        </div>
+      ) : null}
       <div style={{ height: v.getTotalSize(), position: 'relative' }}>
         {v.getVirtualItems().map((r) => (
           <div

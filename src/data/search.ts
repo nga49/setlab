@@ -1,6 +1,6 @@
 import { normalizeText } from '../engine/match'
 
-/** Instant fuzzy search by artist/title: every query word must appear (prefix or substring). */
+/** Instant search by artist/title: every query word must match the start of a word. */
 
 const hay = new WeakMap<object, string>()
 
@@ -23,12 +23,13 @@ export function searchTracks<T extends { artist: string; title: string; remix: s
     let s = 0
     let ok = true
     for (const w of words) {
-      const i = h.indexOf(w)
+      // Every query word must match the start of a word ("k" must not match "track").
+      const i = h.indexOf(` ${w}`)
       if (i < 0) {
         ok = false
         break
       }
-      s += h[i - 1] === ' ' ? 2 : 1 // word-start matches rank higher
+      s += h.startsWith(` ${w} `, i) ? 2 : 1 // whole-word matches rank higher
     }
     if (ok) scored.push({ t, s })
   }

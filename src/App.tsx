@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { SYNC_STALE_MS } from './config'
+import { syncIfStale } from './data/sync'
 import { BooksIcon, CassetteTapeIcon, GearSixIcon, NotePencilIcon, PlayIcon } from '@phosphor-icons/react'
 import { APP_NAME } from './config'
 import { S } from './strings'
@@ -31,6 +33,14 @@ export default function App() {
   useEffect(() => {
     document.title = `${APP_NAME} · ${S.titles[app.tab]}`
   }, [app.tab])
+
+  // On open: fetch tracks.json when the last fetch is older than 30 min (docs/SYNC.md §4).
+  useEffect(() => {
+    void syncIfStale(SYNC_STALE_MS)
+    const onVisible = () => document.visibilityState === 'visible' && void syncIfStale(SYNC_STALE_MS)
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [])
 
   return (
     <div className={cx('wood-grain flex h-full flex-col', gig && 'gig bg-walnut')}>

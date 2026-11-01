@@ -38,13 +38,13 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: Playwright test: set now playing → pick a next track → request a track → path shown, all at 390×844.
 
 ## Phase 5 · Library + Sync
-- [ ] Virtualized track list, filters, detail sheet, overrides, tags
-- [ ] Sync fetch from private data repo, ETag, merge rules, report, error messages
-- [ ] Quick-add (manual)
-- [ ] Insights: heatmap, BPM histogram, genre and era bars, gap finder
-- [ ] `/sync` Python tool + `install.bat` + tests with fixtures (DB mocked, XML fixture)
-- [ ] Shared key table check between Python and TS
-- [ ] Create private `setlab-data` repo with a placeholder `tracks.json` if you have permission; else add to HUMAN_TASKS
+- [x] Virtualized track list, filters, detail sheet, overrides, tags
+- [x] Sync fetch from private data repo, ETag, merge rules, report, error messages
+- [x] Quick-add (manual)
+- [x] Insights: heatmap, BPM histogram, genre and era bars, gap finder
+- [x] `/sync` Python tool + `install.bat` + tests with fixtures (DB mocked, XML fixture)
+- [x] Shared key table check between Python and TS
+- [x] Create private `setlab-data` repo with a placeholder `tracks.json` if you have permission; else add to HUMAN_TASKS (no permission: in HUMAN_TASKS)
 - **Accept**: loading a 5,000-track fixture stays smooth (no frame > 50 ms while scrolling in a perf test), merge tests pass, `pytest` passes.
 
 ## Phase 6 · AI features

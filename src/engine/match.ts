@@ -107,7 +107,9 @@ export function wordSimilarity(a: string, b: string): number {
     for (const x of X) {
       let best = 0
       for (const y of Y) {
-        const s = x === y ? 1 : similarity(x, y)
+        // Numbers and very short words must match exactly ("07" is not "08").
+        const exactOnly = /^\d+$/.test(x) || /^\d+$/.test(y) || x.length <= 2 || y.length <= 2
+        const s = x === y ? 1 : exactOnly ? 0 : similarity(x, y)
         if (s > best) best = s
       }
       sum += best
@@ -122,6 +124,8 @@ export function matchPrepped(pa: Prepped, pb: Prepped, strictRemix = false): num
   const art = pa.artist && pb.artist ? wordSimilarity(pa.artist, pb.artist) : 0.75
   const tit = wordSimilarity(pa.title, pb.title)
   let s = 0.45 * art + 0.55 * tit
+  // Same title by a clearly different artist is a different track.
+  if (pa.artist && pb.artist && art < 0.75) s *= 0.85
   if (pa.remix && pb.remix) {
     if (wordSimilarity(pa.remix, pb.remix) < 0.6) s *= 0.75
   } else if (pa.remix || pb.remix) s *= strictRemix ? 0.75 : 0.9
