@@ -63,9 +63,9 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: exported XML validates against the documented structure; rating 🔥 a pair raises it in Next track results (test).
 
 ## Phase 8 · Polish and handover
-- [ ] Backup export / import, reset
-- [ ] Install hint, icons, splash
-- [ ] Accessibility pass (contrast, labels, focus)
-- [ ] Final Playwright smoke test across all tabs
-- [ ] `README.md` (short) + update `HUMAN_TASKS.md` status block with live URL and remaining steps in order
+- [x] Backup export / import, reset
+- [x] Install hint, icons, splash
+- [x] Accessibility pass (contrast, labels, focus)
+- [x] Final Playwright smoke test across all tabs
+- [x] `README.md` (short) + update `HUMAN_TASKS.md` status block with live URL and remaining steps in order
 - **Accept**: Definition of done in `CLAUDE.md` met.

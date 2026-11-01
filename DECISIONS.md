@@ -80,3 +80,9 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | rekordbox export: KeyType 0 (TrackID) playlist, tracks referenced by rekordbox content id, no Location; non-rekordbox tracks (demo, wishlist) are skipped and counted; a shared fixture is checked from TypeScript (exact output) and Python (laptop resolver) | Phone has no file paths; laptop tool fills them in |
 | 2026-11-01 | M3U export carries names and `#SETLAB-ID` comments, no file paths | The phone never has file paths (DATA.md); M3U stays a portable fallback |
 | 2026-11-01 | Share sheet via Web Share API with files when supported, else a normal download | Works on iOS, Android and desktop browsers |
+| 2026-11-01 | Backup adds `localTracks` (wishlist / quick-add tracks) next to the DATA.md tables | They exist only on the phone; synced tracks still come back with sync |
+| 2026-11-01 | Backup import merges (upsert) and keeps the secrets already on the device when the file has none | Restoring never wipes newer data or keys |
+| 2026-11-01 | Install hint: native prompt where `beforeinstallprompt` exists (Android Chrome), Share › Add to Home Screen text on iOS; dismissible, hidden when installed | DESIGN.md install hint |
+| 2026-11-01 | Accessibility: axe-core (WCAG 2 A/AA) in the final smoke test across all tabs, wheel and settings: 0 violations; contrast of token pairs checked by hand where axe cannot (textured backgrounds) | Phase 8 accessibility pass |
+| 2026-11-01 | Party presets and genre families editable as validated JSON in Settings › Advanced (collapsible) | PRODUCT.md Settings; small, safe, no extra UI weight |
+| 2026-11-01 | Deployment needs the build branch merged into `main` and Pages set to GitHub Actions; the live URL will be https://nga49.github.io/setlab/ | The session may not push to `main`; Pages settings are Nico's |

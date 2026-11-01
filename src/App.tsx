@@ -16,6 +16,8 @@ import { SettingsSheet } from './settings/SettingsSheet'
 import { WheelButton } from './wheel/WheelButton'
 // Imported eagerly: the wheel must open in under 150 ms (docs/PRODUCT.md).
 import WheelOverlay from './wheel/WheelOverlay'
+import { InstallHint } from './ui/InstallHint'
+import { installClickSounds } from './ui/clickSound'
 
 const TAB_ICONS: Record<TabId, typeof PlayIcon> = {
   sets: CassetteTapeIcon,
@@ -33,6 +35,8 @@ export default function App() {
   useEffect(() => {
     document.title = `${APP_NAME} · ${S.titles[app.tab]}`
   }, [app.tab])
+
+  useEffect(() => (settings.clickSounds ? installClickSounds() : undefined), [settings.clickSounds])
 
   // On open: fetch tracks.json when the last fetch is older than 30 min (docs/SYNC.md §4).
   useEffect(() => {
@@ -74,6 +78,7 @@ export default function App() {
         <div className="safe-top" />
       )}
 
+      {!gig ? <InstallHint /> : null}
       <main className="min-h-0 w-full max-w-full flex-1 overflow-x-hidden overflow-y-auto overscroll-contain" id="main">
         <div className="mx-auto w-full max-w-[720px] px-4 pb-40">
           {app.tab === 'sets' && <SetsTab />}

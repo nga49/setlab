@@ -114,7 +114,17 @@ export function LibraryTab() {
           <p className="font-mono text-[12px] text-paper-dim" data-testid="library-count">
             {list.length.toLocaleString()} of {lib.tracks.length.toLocaleString()} tracks
           </p>
-          {list.length ? (
+          {lib.loading ? (
+            <div className="flex flex-col gap-2" aria-busy="true" aria-label="Loading library">
+              {Array.from({ length: 6 }, (_, i) => (
+                <div key={i} className="flex h-14 items-center gap-3 rounded-xl bg-walnut-2/50 px-2">
+                  <span className="h-6 w-10 animate-pulse rounded bg-walnut-3" />
+                  <span className="h-4 flex-1 animate-pulse rounded bg-walnut-3" />
+                  <span className="h-4 w-10 animate-pulse rounded bg-walnut-3" />
+                </div>
+              ))}
+            </div>
+          ) : list.length ? (
             <VirtualList
               items={list}
               rowHeight={60}

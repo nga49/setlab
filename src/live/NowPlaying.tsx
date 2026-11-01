@@ -8,7 +8,7 @@ export function NowPlaying({ track, gig = false }: { track: LibTrack; gig?: bool
   const bpm = track.bpm ? Math.round(track.bpm) : null
   return (
     <Faceplate inner="p-3" className={cx(gig && 'shadow-none')}>
-      <div className="grid grid-cols-[56px_1fr_56px] items-center gap-2 rounded-xl bg-[#140D09] p-2 shadow-[inset_0_3px_8px_#000]" data-testid="now-playing">
+      <div className="grid grid-cols-[56px_1fr_56px] items-center gap-2 rounded-xl bg-[#140D09] p-2 shadow-[inset_0_3px_8px_#0B0705]" data-testid="now-playing">
         <Reel spinning bpm={track.bpm} size={56} />
         <div className="flex min-h-[96px] min-w-0 flex-col justify-center rounded-lg bg-teal px-3 py-2 text-paper">
           {!gig ? <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-teal-light">NOW PLAYING</span> : null}
