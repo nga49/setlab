@@ -13,9 +13,9 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: site deploys, installable, offline shell loads, Lighthouse PWA checks pass.
 
 ## Phase 1 · Engine
-- [ ] `camelot.ts`, `bpm.ts`, `genres.ts`, `energy.ts`, `score.ts`, `arcs.ts`, `generate.ts`, `graph.ts`, `parties.ts` per `ENGINE.md`
-- [ ] Web Worker wrapper for heavy generation
-- [ ] All tests from `ENGINE.md` §10
+- [x] `camelot.ts`, `bpm.ts`, `genres.ts`, `energy.ts`, `score.ts`, `arcs.ts`, `generate.ts`, `graph.ts`, `parties.ts` per `ENGINE.md`
+- [x] Web Worker wrapper for heavy generation
+- [x] All tests from `ENGINE.md` §10
 - **Accept**: coverage ≥ 90% on `src/engine`, performance budgets met in a benchmark test.
 
 ## Phase 2 · Camelot wheel
