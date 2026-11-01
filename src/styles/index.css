@@ -45,7 +45,7 @@ html, body, #root { height: 100%; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--color-walnut);
+  background: var(--color-walnut-deep);
   color: var(--color-paper);
   font-family: var(--font-sans);
   font-weight: 500;
@@ -58,10 +58,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 
 @layer components {
-/* Wood grain: fixed, non-interactive layer (never on scroll containers). */
+/* Wood grain: non-interactive layer over the app root (never on scroll containers). Absolute, not
+   fixed: iOS 26 Safari can leave a bottom gap under viewport-sized fixed layers. */
 .wood-grain::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 70;
   pointer-events: none;
@@ -130,3 +131,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .tape-range.dual { pointer-events: none; }
 .tape-range.dual::-webkit-slider-runnable-track { background: transparent; height: 48px; display: flex; align-items: center; }
 }
+
+/* Outside any layer so it beats the inline splash style in index.html. Behind the app root the page
+   is tab-bar brown, so a gap under the tab bar (seen on iOS 26 home-screen apps) blends in. */
+html, body { background-color: var(--color-walnut-deep); }
+html.gig-mode, html.gig-mode body { background-color: var(--color-walnut); }

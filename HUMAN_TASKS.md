@@ -1,15 +1,17 @@
 # 🙋 HUMAN TASKS · only what Claude Code can't do
 
+The app is called **Awesome Mix** (repo and URL keep the name `setlab`).
+
 ## 📍 Status (updated by Claude Code · 2026-11-01)
 
 | | |
 |---|---|
 | 🌐 App URL | **https://nga49.github.io/setlab/** · live |
 | ✅ Built and tested | Sets (organizer, 3 versions, editor, party sets, tape rack) · Live (now playing, next 5, request, path, bridge, gig mode) · Camelot wheel · Library (5,000-track list, filters, edits, quick-add, insights, gap finder) · Practice (history, ratings, exports) · Settings (sync, AI, backup) · offline PWA |
-| 🔵 Library sync | Working: laptop installed, first sync from rekordbox master.db succeeded. Phone needs step G |
+| 🔵 Library sync | Working: laptop syncs rekordbox master.db, phone connected |
 | 🟣 AI | Ready: estimates, missing tracks finder, gap picks, mixing tips. Needs a Claude API key (step H). Without it everything else works |
 | 🎧 Spotify | Not built: Spotify's 2026 Development Mode rules (Premium owner, endpoint changes) could not be verified. Missing tracks use web search instead |
-| ⏭️ Your next step | Step G below (A to F done) |
+| ⏭️ Your next step | Rows 21 and 22 under "Added by Claude Code" (A to G done) |
 
 ### Your steps, in order
 
@@ -93,6 +95,9 @@ Without step 14: wheel, organizer, live, library all work. Only AI search and es
 | 18 | 💻 github.com | Merge the build branch into `main` (step A) | Deploy runs only from `main` |
 | 19 | 💻 rekordbox, once | Preferences → View → Layout: tick **rekordbox xml**. Preferences → Advanced → Database → rekordbox xml: choose `Music\setlab\setlab-playlists.xml` | Lets rekordbox see the playlists sent from the phone |
 | 20 | 🌐 Claude Code network settings, optional | Allow `pyrekordbox.readthedocs.io`, `docs.github.com` and `developer.spotify.com` for future build sessions | They were blocked during the build; checks were done from package source and the live API instead |
+| 21 | 💻 github.com | Merge the pull request for branch `claude/autonomous-project-build-8wbcju` into `main` | Puts the new name, the Look settings and the bottom gap fix online |
+| 22 | 📱 Phone | Put `Guardians.ttf` in the Files app (AirDrop it, or save the ZIP to iCloud Drive and tap it to unzip). App ⚙️ → **Look** → **Choose font file** → pick it | The font's license is "All Rights Reserved", so it is never put in the public repo or website: it lives only on your phone |
+| 23 | 📱 Phone, optional | To see "Awesome Mix" under the home screen icon: ⚙️ → Backup → tick **Include API key and tokens** → **Export**. Remove the icon, open the URL in Safari, Share → **Add to Home Screen**, then ⚙️ → Backup → **Import** | iOS keeps the name given when the icon was added. Removing the icon can erase the app's data on the phone, hence the backup |
 
 ### 🎚️ rekordbox playlists (Send to rekordbox)
 

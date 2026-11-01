@@ -1,4 +1,7 @@
-# SETLAB
+# Awesome Mix
+
+Repo and URL name: `setlab`.
+
 
 Personal DJ set organizer PWA (phone first, works offline). 👉 Start with `START_HERE.md` and `HUMAN_TASKS.md`. Claude Code: read `CLAUDE.md`.
 
@@ -22,7 +25,8 @@ Pushes to `main` run the tests and deploy to GitHub Pages (`.github/workflows/ci
 
 ## Change title font or app name
 
-1. **Font**: put your font file at `public/fonts/title.woff2` (replace the existing file; convert to WOFF2 first if needed). It is used for screen titles and the app name only.
-2. **Name**: change `APP_NAME` in `src/config.ts`. Header, page title and PWA manifest follow it.
+1. **Font, private (any license)**: on the phone, ⚙️ → **Look** → **Choose font file**. The file stays on that phone (and in its backups). Use this for fonts you are not allowed to share, like the current "Guardians" (All Rights Reserved).
+2. **Font, built in (only for fonts whose license allows web use, e.g. OFL)**: replace `public/fonts/title.woff2` and its license file. The repo and site are public, so everyone can download it.
+3. **Name**: change `APP_NAME` in `src/config.ts`. Header, page title and PWA manifest follow it. Never change `APP_SLUG`: it names the on-device database and backup files.
 
 Then run `npm run icons` if you also changed the icon, commit and push.

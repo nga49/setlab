@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from './db'
+import type { TitleFont } from '../ui/titleFont'
 
 /** Every setting with its default. Tokens and keys live here, on the device only. */
 export interface Settings {
@@ -37,6 +38,8 @@ export interface Settings {
   clickSounds: boolean
   installHintDismissed: boolean
   gigMode: boolean
+  /** Title font picked on this phone (null = built-in). Never leaves the device except in backups. */
+  titleFont: TitleFont | null
 
   // Advanced editors (null = use built-in defaults)
   partyPresets: unknown | null
@@ -73,6 +76,7 @@ export const DEFAULT_SETTINGS: Settings = {
   clickSounds: false,
   installHintDismissed: false,
   gigMode: false,
+  titleFont: null,
 
   partyPresets: null,
   genreFamilies: null,

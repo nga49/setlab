@@ -11,6 +11,7 @@ import { useToast } from '../ui/Toast'
 import { AiSettings } from './AiSettings'
 import { BackupSettings } from './BackupSettings'
 import { AdvancedSettings } from './AdvancedSettings'
+import { LookSettings } from './LookSettings'
 
 function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
@@ -104,6 +105,7 @@ export function SettingsSheet() {
         <SyncSettings />
         <AiSettings />
         <MixSettings />
+        <LookSettings />
         <section className="flex flex-col gap-2">
           <SectionLabel>🧪 {S.settings.demo}</SectionLabel>
           <div className="flex gap-2">

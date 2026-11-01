@@ -12,6 +12,9 @@ if (new URLSearchParams(location.search).has('e2e')) {
   void import('./db/db').then(({ db }) => ((window as unknown as { __setlab: unknown }).__setlab = { db }))
 }
 
+// Ask the browser to keep this app's data (sets, ratings, settings) even when storage runs low.
+void navigator.storage?.persist?.().catch(() => false)
+
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   // autoUpdate: a new version activates on the next load; the app shell keeps working offline.
   registerSW({ immediate: true })

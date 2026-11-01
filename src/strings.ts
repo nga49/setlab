@@ -37,6 +37,7 @@ export const S = {
     demoOff: 'Off',
     sounds: 'Click sounds',
     backup: 'Backup',
+    look: 'Look',
     about: 'About',
   },
 } as const
