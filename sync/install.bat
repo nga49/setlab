@@ -16,6 +16,8 @@ if errorlevel 1 goto nopython
 
 set "APPDIR=%APPDATA%\setlab-sync"
 if not exist "%APPDIR%" mkdir "%APPDIR%"
+rem A watcher from an earlier install keeps the Python files busy: stop it first.
+if exist "%APPDIR%\venv\Scripts\python.exe" "%APPDIR%\venv\Scripts\python.exe" "%~dp0setlab_sync.py" --stop-watch >nul 2>nul
 echo [1/5] Creating a private Python environment...
 %PY% -m venv "%APPDIR%\venv"
 if errorlevel 1 goto fail
@@ -29,14 +31,15 @@ copy /Y "%~dp0keys.json" "%APPDIR%\" >nul
 echo [3/5] Your GitHub token A and data repo:
 "%APPDIR%\venv\Scripts\python.exe" "%APPDIR%\setlab_sync.py" --setup
 if errorlevel 1 goto fail
-echo [4/5] Scheduling: at logon, every 2 hours, daily at 23:00...
+echo [4/5] Automatic sync: each time you close rekordbox, and once at logon...
 "%APPDIR%\venv\Scripts\python.exe" "%APPDIR%\setlab_sync.py" --install-schedule
 if errorlevel 1 goto fail
 echo [5/5] First sync now...
 "%APPDIR%\venv\Scripts\python.exe" "%APPDIR%\setlab_sync.py"
 if errorlevel 1 goto syncfail
 echo.
-echo   Done. Add and analyze tracks in rekordbox as usual.
+echo   Done. Add and analyze tracks in rekordbox as usual: the app gets them
+echo   each time you close rekordbox.
 echo.
 pause
 exit /b 0

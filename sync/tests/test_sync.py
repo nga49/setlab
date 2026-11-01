@@ -308,3 +308,71 @@ def test_setup_keeps_saved_token(tmp_path, monkeypatch, capsys):
     assert s.setup(cfg_path).token == FAKE_TOKEN
     out = capsys.readouterr().out
     assert "keeping the one already saved" in out and FAKE_TOKEN not in out
+
+
+# Watcher: sync each time rekordbox closes.
+
+
+def _watch(running, exports=None, run_raises=False, others=()):
+    """Runs watch() on a scripted list of 'is rekordbox running' answers."""
+    calls = {"run": 0, "convert": 0, "slept": []}
+    seq = iter(running)
+    exp = iter(exports) if exports is not None else None
+
+    def run(_p):
+        calls["run"] += 1
+        if run_raises:
+            raise RuntimeError("boom")
+
+    def convert():
+        calls["convert"] += 1
+
+    rc = s.watch(
+        Path("cfg.json"),
+        is_running=lambda: next(seq),
+        sleep=lambda sec: calls["slept"].append(sec),
+        run=run,
+        exports=(lambda: next(exp)) if exp else (lambda: ()),
+        convert=convert,
+        others=lambda: list(others),
+        max_polls=len(running) - 1,
+    )
+    return rc, calls
+
+
+def test_watch_syncs_once_at_start_then_each_time_rekordbox_closes():
+    # start: closed · opened · still open · closed · closed · opened · closed
+    rc, calls = _watch([False, True, True, False, False, True, False])
+    assert rc == 0
+    assert calls["run"] == 1 + 2
+    assert calls["slept"][0] == s.WATCH_START_DELAY_S
+    assert calls["slept"].count(s.WATCH_SETTLE_S) >= 2
+
+
+def test_watch_rekordbox_open_at_start_syncs_when_it_closes():
+    _, calls = _watch([True, True, False])
+    assert calls["run"] == 1 + 1
+
+
+def test_watch_keeps_going_when_a_sync_fails():
+    # Every sync raises (offline, GitHub down...): the watcher keeps polling and retries next close.
+    _, calls = _watch([False, True, False, True, False], run_raises=True)
+    assert calls["run"] == 3
+
+
+def test_watch_does_not_start_twice():
+    rc, calls = _watch([False, True, False], others=[1234])
+    assert rc == 0 and calls["run"] == 0
+
+
+def test_watch_converts_new_phone_playlists():
+    a, b = (("setlab-a.xml", 1),), (("setlab-a.xml", 1), ("setlab-b.xml", 2))
+    # exports() is read once at start, then once per poll
+    _, calls = _watch([False, False, False, False], exports=[a, a, b, b])
+    assert calls["convert"] == 1
+
+
+def test_only_the_rekordbox_app_counts_not_its_background_agent():
+    assert s.rekordbox_running(["explorer.exe", "rekordboxAgent.exe"]) is False
+    assert s.rekordbox_running(["explorer.exe", "rekordbox.exe"]) is True
+    assert s.rekordbox_running(["Rekordbox.EXE"]) is True
