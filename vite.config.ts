@@ -52,5 +52,6 @@ export default defineConfig({
     }),
   ],
   worker: { format: 'es' },
-  build: { target: 'es2022', sourcemap: false },
+  // One precached bundle (~160 kB gzip) is fine for an offline PWA.
+  build: { target: 'es2022', sourcemap: false, chunkSizeWarningLimit: 900 },
 })

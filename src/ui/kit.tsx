@@ -129,7 +129,8 @@ export function TapeCounter({
   label?: string
   className?: string
 }) {
-  const s = String(value).padStart(digits, ' ').slice(-Math.max(digits, String(value).length))
+  const pad = typeof value === 'number' ? '0' : ' '
+  const s = String(value).padStart(digits, pad).slice(-Math.max(digits, String(value).length))
   const cell = {
     sm: 'h-7 w-5 text-[16px]',
     md: 'h-11 w-8 text-[26px]',

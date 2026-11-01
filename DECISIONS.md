@@ -40,3 +40,10 @@ Claude Code: one line per decision. Format: `YYYY-MM-DD · decision · why`.
 | 2026-11-01 | Wheel imported eagerly (not lazy) and drawn as plain SVG; measured 19 to 39 ms to open in the e2e test | 150 ms budget, no network |
 | 2026-11-01 | Swipe-down to close starts from the header or the dial only | Keeps taps on keys and scrolling of the count list working |
 | 2026-11-01 | Effective track values computed once in a LibraryProvider (override > rekordbox > estimate > heuristic) with a source per field; graph cached per library + settings | One source of truth for every tab |
+| 2026-11-01 | Organizer always shows the 3 versions (one per mode); the mode chips scroll to a version instead of filtering | PRODUCT.md: "Output: 3 versions side by side, one per mode" |
+| 2026-11-01 | "Picked + fill" makes every picked track a must-play; locks (max 3) matter most for "only picked" with a duration, where the engine chooses a subset | Matches "build around" intent; locks stay meaningful in both pools |
+| 2026-11-01 | Unmatched lines of a pasted list are saved as wishlist tracks (`local:` ids) with optional manual BPM/key, so they can be used in sets and merge on the next sync | DATA.md: quick-add / wishlist tracks merge on sync |
+| 2026-11-01 | Swap replaces the arriving track (or the one before it if locked) with the library track maximising score in + score out; Bridge inserts the best single bridge | PRODUCT.md Swap / Bridge |
+| 2026-11-01 | Set editor: grip handle drag (pointer events, keyboard arrows as fallback), swipe left > 110 px removes, visible ✕ as accessible alternative; rescoring runs on every change (< 5 ms for 40 tracks) | DJ-booth touch + accessibility |
+| 2026-11-01 | Custom CSS lives in Tailwind `@layer base` / `@layer components` | Unlayered `button { color: inherit }` was overriding every text-colour utility |
+| 2026-11-01 | Single precached JS bundle (~160 kB gzip), chunk warning raised to 900 kB | Offline PWA loads everything once; splitting adds requests without benefit |

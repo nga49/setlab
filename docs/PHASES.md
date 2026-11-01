@@ -23,11 +23,11 @@ Work top to bottom. After each phase: `npm test` + `npm run build` green, update
 - **Accept**: opens < 150 ms, works offline, correct highlights for 8A, 12B, 1A (wrap).
 
 ## Phase 3 · Sets tab
-- [ ] Organizer: pick / paste, modes, arcs, locks, pins, duration fit, pool option
-- [ ] 3 version cards, transition dots + reasons, swap, bridge
-- [ ] Drag reorder with live rescoring, regenerate keeping locks
-- [ ] Save / open / duplicate / delete sets
-- [ ] Party set generator with presets, sliders, gap cards
+- [x] Organizer: pick / paste, modes, arcs, locks, pins, duration fit, pool option
+- [x] 3 version cards, transition dots + reasons, swap, bridge
+- [x] Drag reorder with live rescoring, regenerate keeping locks
+- [x] Save / open / duplicate / delete sets
+- [x] Party set generator with presets, sliders, gap cards
 - **Accept**: with demo data, a 60-min Journey set with 2 locks generates in < 1 s and lands within ±5% duration.
 
 ## Phase 4 · Live tab
